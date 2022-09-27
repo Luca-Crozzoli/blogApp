@@ -75,30 +75,40 @@ public class RegisterActivity extends AppCompatActivity {
                 if (name.isEmpty()) {
                     userName.setError( "Full Name is required" );
                     userName.requestFocus();
+                    regButton.setVisibility( View.VISIBLE );
+                    progressBar.setVisibility( View.INVISIBLE );
                     return;
                 }
 
                 if (mail.isEmpty()) {
                     userEmail.setError( "Mail is required" );
                     userEmail.requestFocus();
+                    regButton.setVisibility( View.VISIBLE );
+                    progressBar.setVisibility( View.INVISIBLE );
                     return;
                 }
 
                 if (!Patterns.EMAIL_ADDRESS.matcher( mail ).matches()) {
                     userEmail.setError( "Provide a valid Mail" );
                     userEmail.requestFocus();
+                    regButton.setVisibility( View.VISIBLE );
+                    progressBar.setVisibility( View.INVISIBLE );
                     return;
                 }
 
                 if (password.isEmpty()) {
                     userPassword.setError( "Password is required" );
                     userPassword.requestFocus();
+                    regButton.setVisibility( View.VISIBLE );
+                    progressBar.setVisibility( View.INVISIBLE );
                     return;
                 }
                 //for firebase the password must be at least 6 chars long
                 if (password.length() < 6) {
                     userPassword.setError( "Min length 6 characters" );
                     userPassword.requestFocus();
+                    regButton.setVisibility( View.VISIBLE );
+                    progressBar.setVisibility( View.INVISIBLE );
                     return;
                 }
 
