@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1029594198744",
+    "project_id": "pictureblog-209cb",
+    "storage_bucket": "pictureblog-209cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029594198744:android:7a99b81d3f5f6678891dad",
+        "android_client_info": {
+          "package_name": "com.example.pictureblog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029594198744-a8sc3k32ab6fmtj4rb6itv4hdfte3pve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm1Vd97Cubi_AJHsUB8QFVWOR1W7ytbhE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029594198744-a8sc3k32ab6fmtj4rb6itv4hdfte3pve.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
