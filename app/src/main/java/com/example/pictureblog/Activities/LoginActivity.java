@@ -25,9 +25,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText userMail, userPassword;
     private Button btnLogin;
     private ProgressBar loginProgress;
-    //Initialize mAuth variabel
+    //Initialize mAuth variable
     private FirebaseAuth mAuth;
-    //Intialize the intent used in the updateUI method
+    //Initialize the intent used in the updateUI method
     private Intent homeActivity;
     private ImageView loginPhoto;
 
@@ -44,8 +44,8 @@ public class LoginActivity extends AppCompatActivity {
 
         //Get the firebase instance
         mAuth = FirebaseAuth.getInstance();
-        //initialize the Intent
-        homeActivity = new Intent(this, HomeActivity.class);
+        //initialize the Intent to move user at home after the login
+        homeActivity = new Intent(this, Home.class);
 
         loginPhoto = findViewById( R.id.login_photo );
 
@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String mail = userMail.getText().toString().trim();
                 final String password = userPassword.getText().toString().trim();
 
-                //check the fields fo the mail and password
+                //check the fields of the mail and password
                 if (mail.isEmpty()) {
                     userMail.setError( "Mail is required" );
                     userMail.requestFocus();
@@ -141,6 +141,8 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
     }
 
+
+    //We do the override to let the user logged in if it is already logged in
     @Override
     protected void onStart() {
         super.onStart();
