@@ -1,12 +1,18 @@
 package com.example.pictureblog.Activities;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.pictureblog.Activities.ui.home.HomeFragment;
@@ -38,25 +44,36 @@ public class Home extends AppCompatActivity  {
     //Add the instances for firebase DONE BY ME!!!!!!!!!!!!!!!!!!!!!!!
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
+    Dialog popAddPost; //creating a new dialog variable to consent the upload of the image
+
+    //popup widgets references on popup_add_post.xml
+    ImageView popupUserImage,popupPostImage,popupAddButton;
+    TextView popupTitle, popupDescription;
+    ProgressBar popupClickProgress;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        //DONE BY ME
+        //DONE BY ME initialize firebase instances
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
+        //DONE BY ME initialize popup
+        iniPopup();
 
         binding = ActivityHome2Binding.inflate( getLayoutInflater() );
         setContentView( binding.getRoot() );
 
 
+
+        //Here we have our floating action Button
         setSupportActionBar( binding.appBarHome.toolbar );
         binding.appBarHome.fab.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make( view, "Replace with your own action", Snackbar.LENGTH_LONG )
-                        .setAction( "Action", null ).show();
+                popAddPost.show();
+
             }
         } );
 
@@ -74,6 +91,42 @@ public class Home extends AppCompatActivity  {
 
         //DONE BY ME, after all those things onCreate we update the headerNavigation bar
         updateNavHeader();
+    }
+
+    //method to initialize the pop up menu used to upload a post
+    private void iniPopup() {
+
+        popAddPost = new Dialog( this );
+        popAddPost.setContentView( R.layout.popup_add_post ); //Update our layout
+        popAddPost.getWindow().setBackgroundDrawable( new ColorDrawable( Color.TRANSPARENT ) ); //transparent pop up
+        popAddPost.getWindow().setLayout( Toolbar.LayoutParams.MATCH_PARENT,Toolbar.LayoutParams.WRAP_CONTENT );
+        popAddPost.getWindow().getAttributes().gravity = Gravity.TOP; //scroll down the window gravity on top
+
+        //initialize popup widgets
+        popupUserImage = popAddPost.findViewById( R.id.popup_user_image );
+        popupPostImage = popAddPost.findViewById( R.id.popup_img );
+
+        popupTitle = popAddPost.findViewById( R.id.popup_title );
+        popupDescription = popAddPost.findViewById( R.id.popup_description );
+
+        popupAddButton = popAddPost.findViewById( R.id.popup_add );
+        popupClickProgress = popAddPost.findViewById( R.id.popup_progressBar );
+
+        //load current user logged in image using Glide
+        Glide.with(Home.this).load( currentUser.getPhotoUrl() ).into( popupUserImage );
+
+        // add post click listener on the button
+        popupAddButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupAddButton.setVisibility( View.INVISIBLE );
+                popupClickProgress.setVisibility( View.VISIBLE );
+            }
+        } );
+
+
+
+
     }
 
 
