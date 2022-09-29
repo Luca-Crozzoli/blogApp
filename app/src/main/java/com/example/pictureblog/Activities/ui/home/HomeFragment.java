@@ -1,5 +1,7 @@
 package com.example.pictureblog.Activities.ui.home;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +29,27 @@ private FragmentHomeBinding binding;
         return root;
     }
 
-@Override
+    //CAN BE REMOVED?
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach( context );
+    }
+
+    //CAN BE REMOVED?
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    //CAN BE REMOVED?
+    public interface OnFragmentInteractionListener{
+        //TODO update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 }

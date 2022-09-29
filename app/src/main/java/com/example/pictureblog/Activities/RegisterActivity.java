@@ -53,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView( R.layout.activity_register );
 
         //initialization of views
+        imgUserPhoto = findViewById( R.id.regUserPhoto );
         userName = findViewById( R.id.regName );
         userEmail = findViewById( R.id.regMail );
         userPassword = findViewById( R.id.regPassword );
@@ -123,6 +124,14 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
+                if(imgUserPhoto.getDrawable().getConstantState()==getResources().getDrawable(R.drawable.userphoto,getTheme() ).getConstantState()){
+                    showMessage( "You need to upload your image!" );
+                    imgUserPhoto.requestFocus();
+                    regButton.setVisibility( View.VISIBLE );
+                    progressBar.setVisibility( View.INVISIBLE );
+                    return;
+                }
+
                 //Everything is okay then we can start to create a new user
                 //create user account method will try to create the user if the email is valid
 
@@ -131,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
         } );
 
 
-        imgUserPhoto = findViewById( R.id.regUserPhoto );
+
         imgUserPhoto.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
