@@ -30,7 +30,7 @@ import com.example.pictureblog.databinding.ActivityHome2Binding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Home extends AppCompatActivity  {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityHome2Binding binding;
@@ -122,15 +122,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         Glide.with( this).load( currentUser.getPhotoUrl() ).into(navUserPhoto);
     }
 
+    /*
+    //TODO remember when uncomment ro let the class implement the following
+    implements NavigationView.OnNavigationItemSelectedListener
     @SuppressWarnings( "StatementWHitEmptyBody" )
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.nav_home){
+            getSupportActionBar().setTitle( "Home" );
             getSupportFragmentManager().beginTransaction().replace( R.id.nav_host_fragment_content_home, new HomeFragment() ).commit();
         }else if ( id == R.id.nav_profile){
+            getSupportActionBar().setTitle( "Profile" );
             getSupportFragmentManager().beginTransaction().replace( R.id.nav_host_fragment_content_home, new ProfileFragment() ).commit();
         }else if(id == R.id.nav_settings){
+            getSupportActionBar().setTitle( "Settings" );
             getSupportFragmentManager().beginTransaction().replace( R.id.nav_host_fragment_content_home, new SettingsFragment() ).commit();
         }else  if(id == R.id.nav_logout){
             FirebaseAuth.getInstance().signOut();
@@ -142,5 +148,5 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         DrawerLayout drawer = (DrawerLayout) findViewById( R.id.drawer_layout );
         drawer.closeDrawer( GravityCompat.START );
         return true;
-    }
+    }*/
 }
