@@ -1,16 +1,24 @@
 package com.example.pictureblog.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.pictureblog.Activities.ui.home.HomeFragment;
+import com.example.pictureblog.Activities.ui.profile.ProfileFragment;
+import com.example.pictureblog.Activities.ui.settings.SettingsFragment;
 import com.example.pictureblog.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.TaskStackBuilder;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -22,7 +30,7 @@ import com.example.pictureblog.databinding.ActivityHome2Binding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityHome2Binding binding;
@@ -30,6 +38,7 @@ public class Home extends AppCompatActivity {
     //Add the instances for firebase DONE BY ME!!!!!!!!!!!!!!!!!!!!!!!
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +59,23 @@ public class Home extends AppCompatActivity {
                         .setAction( "Action", null ).show();
             }
         } );
+
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow ) //TODO add eventually the R.id.nav_logout
+                R.id.nav_home, R.id.nav_profile, R.id.nav_settings) //TODO add eventually the R.id.nav_logout
                 .setOpenableLayout( drawer )
                 .build();
         NavController navController = Navigation.findNavController( this, R.id.nav_host_fragment_content_home );
         NavigationUI.setupActionBarWithNavController( this, navController, mAppBarConfiguration );
         NavigationUI.setupWithNavController( navigationView, navController );
 
-        //DONE BY ME, after all those things onCreate we update the headerNavigazion bar
+        //DONE BY ME, after all those things onCreate we update the headerNavigation bar
         updateNavHeader();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,10 +83,22 @@ public class Home extends AppCompatActivity {
         getMenuInflater().inflate( R.menu.home, menu );
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        if(menuItem.getItemId() == R.id.action_settings){
+            FirebaseAuth.getInstance().signOut();
+            Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity( loginActivity );
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected( menuItem );
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController( this, R.id.nav_host_fragment_content_home );
+        NavController navController = Navigation.findNavController( this, R.id.nav_host_fragment_content_home ); //CONTAINED IN CONTENT HOME XML
         return NavigationUI.navigateUp( navController, mAppBarConfiguration )
                 || super.onSupportNavigateUp();
     }
@@ -97,5 +120,27 @@ public class Home extends AppCompatActivity {
 
         //Now we use Glide to upload the image of the user
         Glide.with( this).load( currentUser.getPhotoUrl() ).into(navUserPhoto);
+    }
+
+    @SuppressWarnings( "StatementWHitEmptyBody" )
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.nav_home){
+            getSupportFragmentManager().beginTransaction().replace( R.id.nav_host_fragment_content_home, new HomeFragment() ).commit();
+        }else if ( id == R.id.nav_profile){
+            getSupportFragmentManager().beginTransaction().replace( R.id.nav_host_fragment_content_home, new ProfileFragment() ).commit();
+        }else if(id == R.id.nav_settings){
+            getSupportFragmentManager().beginTransaction().replace( R.id.nav_host_fragment_content_home, new SettingsFragment() ).commit();
+        }else  if(id == R.id.nav_logout){
+            FirebaseAuth.getInstance().signOut();
+            Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity( loginActivity );
+            finish();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById( R.id.drawer_layout );
+        drawer.closeDrawer( GravityCompat.START );
+        return true;
     }
 }
