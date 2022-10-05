@@ -1,6 +1,7 @@
 package com.example.pictureblog.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.pictureblog.Activities.PostDetailActivity;
 import com.example.pictureblog.Models.Post;
 import com.example.pictureblog.R;
 
@@ -63,6 +65,33 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             tvTitle = itemView.findViewById( R.id.row_post_title );
             imgPost = itemView.findViewById( R.id.row_post_img );
             imgPostProfile = itemView.findViewById( R.id.row_post_profile_img );
+
+            itemView.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent postDetailActivity = new Intent(mContext, PostDetailActivity.class );
+                    int position = getAdapterPosition();
+
+                    postDetailActivity.putExtra( "title", mData.get(position).getTitle() );
+                    postDetailActivity.putExtra( "postImage",mData.get( position ).getPicture() );
+                    postDetailActivity.putExtra( "description", mData.get( position ).getDescription() );
+                    postDetailActivity.putExtra( "postKey", mData.get( position ).getPostKey() );
+                    postDetailActivity.putExtra( "userPhoto", mData.get( position ).getUserPhoto() );
+                    //@TODO  fix it later forgot to add userName to post object
+                    //postDetailActivity.putExtra( "userName", mData.get( position ).getTimeStamp() );
+
+
+                    //here we provide the time stamp
+                    long timestamp = (long) mData.get( position ).getTimeStamp();
+                    postDetailActivity.putExtra( "postDate", timestamp );
+
+                    //start the activity after passing the different parameter using put extra
+                    mContext.startActivity(postDetailActivity );
+
+
+
+                }
+            } );
 
         }
     }
