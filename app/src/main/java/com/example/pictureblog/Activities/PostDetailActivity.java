@@ -2,6 +2,8 @@ package com.example.pictureblog.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -14,17 +16,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.pictureblog.Adapters.CommentAdapter;
 import com.example.pictureblog.Models.Comment;
 import com.example.pictureblog.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class PostDetailActivity extends AppCompatActivity {
@@ -41,6 +49,13 @@ public class PostDetailActivity extends AppCompatActivity {
 
     FirebaseDatabase firebaseDatabase;
 
+    //new recycler view for holding the comments
+    RecyclerView rVComment;
+    // used to adapt the content of the comments
+    CommentAdapter commentAdapter;
+    List<Comment> listComment;
+    static String COMMENT_KEY = "comment";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +71,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
         //initialization of the views
 
+        rVComment = findViewById( R.id.rv_comments );
         imgPost = findViewById( R.id.post_detail_img );
         imgUserPost = findViewById( R.id.post_detail_user_img );
         imgCurrentUser = findViewById( R.id.post_detail_currentuser_img );
@@ -80,7 +96,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 //after a click on the add button the button must be invisible
                 btnAddComment.setVisibility( View.INVISIBLE);
 
-                DatabaseReference commentReference = firebaseDatabase.getReference( "comment" ).child( PostKey ).push();
+                DatabaseReference commentReference = firebaseDatabase.getReference( COMMENT_KEY ).child( PostKey ).push();
                 String comment_content = editTextComment.getText().toString();
                 String uid = currentUser.getUid();
                 String uname = currentUser.getDisplayName();
@@ -136,6 +152,37 @@ public class PostDetailActivity extends AppCompatActivity {
         txtPostDateName.setText( date );
 
 
+        //initialize Recyclerview of the comments
+        iniRvComment();
+
+
+    }
+
+    private void iniRvComment() {
+
+        rVComment.setLayoutManager( new LinearLayoutManager( this ) );
+
+        DatabaseReference commentRef = firebaseDatabase.getReference(COMMENT_KEY).child(PostKey);
+        commentRef.addValueEventListener( new ValueEventListener() {
+
+            //https://stackoverflow.com/questions/61703700/when-to-use-datasnapshot-getchildren
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listComment = new ArrayList<>();
+                for(DataSnapshot snap : snapshot.getChildren()){
+                    Comment comment = snap.getValue(Comment.class);
+                    listComment.add( comment );
+                }
+                commentAdapter = new CommentAdapter( getApplicationContext(),listComment );
+                rVComment.setAdapter( commentAdapter );
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        } );
     }
 
     private void showMessage(String message) {
