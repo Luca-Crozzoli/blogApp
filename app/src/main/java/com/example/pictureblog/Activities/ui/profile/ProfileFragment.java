@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pictureblog.Adapters.PostAdapter;
+import com.example.pictureblog.Adapters.PostProfileAdapter;
 import com.example.pictureblog.Models.Post;
 import com.example.pictureblog.R;
 import com.example.pictureblog.databinding.FragmentProfileBinding;
@@ -34,12 +36,12 @@ public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
     RecyclerView postRecyclerView;
-    PostAdapter postAdapter;
+    PostProfileAdapter postProfileAdapter;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     List<Post> postList;
 
-    //adding the currentuser dependencies
+    //adding the current user dependencies
     FirebaseUser currentUser;
     String userId;
 
@@ -72,7 +74,7 @@ public class ProfileFragment extends Fragment {
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         userId =currentUser.getUid();
-        //get List posts from the database
+        //get List posts from the database only the ones where the user corresponds to the one logged in
         databaseReference.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -85,8 +87,11 @@ public class ProfileFragment extends Fragment {
                    }
                 }
 
-                postAdapter = new PostAdapter( getActivity(),postList );
-                postRecyclerView.setAdapter( postAdapter );
+                if(postList.isEmpty()){
+                    Toast.makeText( getContext(), "NO POSTS UPDATED", Toast.LENGTH_SHORT ).show();
+                }
+                postProfileAdapter = new PostProfileAdapter( getActivity(),postList );
+                postRecyclerView.setAdapter( postProfileAdapter );
             }
 
             @Override

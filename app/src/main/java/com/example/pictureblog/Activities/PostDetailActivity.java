@@ -165,6 +165,8 @@ public class PostDetailActivity extends AppCompatActivity {
 
     }
 
+
+    //retrieve all the comments associated to the post and display it using the comment adapter
     private void iniRvComment() {
 
         rVComment.setLayoutManager( new LinearLayoutManager( this ) );
