@@ -231,10 +231,19 @@ public class Home extends AppCompatActivity {
                             public void onSuccess(Uri uri) {
                                 String imageDownloadLink = uri.toString();
                                 // create post Object here after upload the image in firebase storage successfully
-                                Post post = new Post(postTitle,postDescription,imageDownloadLink,currentUser.getUid(),currentUser.getPhotoUrl().toString());
 
-                                //add the post to the database
-                                addPost(post);
+                                if(currentUser.getPhotoUrl() !=null) { //WE UPLOAD THE PHOT OF THE USER IF WHEN REGISTERED PROVIDED IT
+                                    Post post = new Post( postTitle, postDescription, imageDownloadLink, currentUser.getUid(), currentUser.getPhotoUrl().toString() );
+
+                                    //add the post to the database
+                                    addPost( post );
+                                }else{//WE LEAVE THE USER IMAGE PHOTO TO NULL. THIS WILL AUTOMATICALLY UPLOAD THE DEFAULT IMAGE FOR THE USER
+                                    Post post = new Post( postTitle, postDescription, imageDownloadLink, currentUser.getUid(), null );
+
+                                    //add the post to the database
+                                    addPost( post );
+
+                                }
                             }
                         } ).addOnFailureListener( new OnFailureListener() {
                             @Override
@@ -321,7 +330,12 @@ public class Home extends AppCompatActivity {
         navUserMail.setText( currentUser.getEmail() );
 
         //Now we use Glide to upload the image of the user
-        Glide.with( this ).load( currentUser.getPhotoUrl() ).into( navUserPhoto );
+
+        if(currentUser.getPhotoUrl()!=null){
+            Glide.with( this ).load( currentUser.getPhotoUrl() ).into( navUserPhoto );
+        }else {
+            Glide.with( this ).load( R.drawable.userphoto ).into( navUserPhoto );
+        }
     }
 
     /*

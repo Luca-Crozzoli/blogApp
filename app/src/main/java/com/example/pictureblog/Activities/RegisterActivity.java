@@ -124,13 +124,15 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(imgUserPhoto.getDrawable().getConstantState()==getResources().getDrawable(R.drawable.userphoto,getTheme() ).getConstantState()){
+                //TODO this is a commented if statement because we are implementi anothr method to allow the user registration without
+                //uploading the user photo
+                /*if(imgUserPhoto.getDrawable().getConstantState()==getResources().getDrawable(R.drawable.userphoto,getTheme() ).getConstantState()){
                     showMessage( "You need to upload your image!" );
                     imgUserPhoto.requestFocus();
                     regButton.setVisibility( View.VISIBLE );
                     progressBar.setVisibility( View.INVISIBLE );
                     return;
-                }
+                }*/
 
                 //Everything is okay then we can start to create a new user
                 //create user account method will try to create the user if the email is valid
@@ -172,7 +174,16 @@ public class RegisterActivity extends AppCompatActivity {
                             //user account created successfully
                             showMessage( "New User account registration done!" );
                             //after created the user account we need to update his picture and name
-                            updateUserInfo( name, pickedImgUri, mAuth.getCurrentUser() );
+
+                            //check if the picked image is null or not
+                            if(pickedImgUri != null){
+                                updateUserInfo( name, pickedImgUri, mAuth.getCurrentUser() );
+                            }else{
+                                updateUserInfoWithoutPhoto( name,mAuth.getCurrentUser() );
+
+                            }
+
+
 
                         } else {
                             //user account creation failed
@@ -220,6 +231,28 @@ public class RegisterActivity extends AppCompatActivity {
                 } );
             }
         } );
+
+    }
+
+
+    private void updateUserInfoWithoutPhoto(String name, FirebaseUser currentUser) {
+
+                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                .setDisplayName( name )
+                                .build();
+
+                        currentUser.updateProfile( profileUpdate )
+                                .addOnCompleteListener( new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            //user info updated successfully
+                                            showMessage( "Register Complete" );
+                                            updateUI();
+                                        }
+
+                                    }
+                                } );
 
     }
 

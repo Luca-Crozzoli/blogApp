@@ -136,6 +136,11 @@ public class PostDetailActivity extends AppCompatActivity {
         txtPostTitle.setText( postTitle );
 
         String userPostImage = getIntent().getExtras().getString( "userPhoto" );
+        if(userPostImage !=null){
+            Glide.with( this ).load( userPostImage ).into( imgUserPost );
+        }else{
+            Glide.with( this ).load( R.drawable.userphoto ).into( imgUserPost );
+        }
         Glide.with( this ).load( userPostImage ).into( imgUserPost );
 
         String postDescription = getIntent().getExtras().getString( "description" );
@@ -143,6 +148,8 @@ public class PostDetailActivity extends AppCompatActivity {
 
         //retrieve the image of the current user which wants to add the comment
         Glide.with( this ).load( currentUser.getPhotoUrl() ).into( imgCurrentUser );
+
+
 
         //retrieve the post id
         PostKey = getIntent().getExtras().getString( "postKey" );
