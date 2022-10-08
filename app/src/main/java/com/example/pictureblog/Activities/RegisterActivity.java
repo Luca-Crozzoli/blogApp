@@ -7,8 +7,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -142,7 +144,6 @@ public class RegisterActivity extends AppCompatActivity {
         } );
 
 
-
         imgUserPhoto.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +158,7 @@ public class RegisterActivity extends AppCompatActivity {
         regLoginText.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent loginActivity = new Intent( getApplicationContext(), LoginActivity.class );
                 startActivity( loginActivity );
                 finish();
             }
@@ -174,17 +175,7 @@ public class RegisterActivity extends AppCompatActivity {
                             //user account created successfully
                             showMessage( "New User account registration done!" );
                             //after created the user account we need to update his picture and name
-
-                            //check if the picked image is null or not
-                            if(pickedImgUri != null){
-                                updateUserInfo( name, pickedImgUri, mAuth.getCurrentUser() );
-                            }else{
-                                updateUserInfoWithoutPhoto( name,mAuth.getCurrentUser() );
-
-                            }
-
-
-
+                            updateUserInfo( name, pickedImgUri, mAuth.getCurrentUser() );
                         } else {
                             //user account creation failed
                             showMessage( "New user registration failed" + task.getException().getMessage() );
@@ -199,6 +190,13 @@ public class RegisterActivity extends AppCompatActivity {
     private void updateUserInfo(String name, Uri pickedImgUri, FirebaseUser currentUser) {
         //first upload user image to firebase storage and get url
         StorageReference mStorage = FirebaseStorage.getInstance().getReference().child( "users_photos" );
+        //if no image is picked set the uri with the default image we have in drawable
+        if(pickedImgUri == null){
+            Resources resources = getResources();
+            pickedImgUri = Uri.parse( ContentResolver.SCHEME_ANDROID_RESOURCE+"://"+ resources.getResourcePackageName( R.drawable.userphoto)+'/'+
+                    resources.getResourceTypeName( R.drawable.userphoto )+'/'+
+                    resources.getResourceEntryName( R.drawable.userphoto ));
+        }
         StorageReference imageFilePath = mStorage.child( pickedImgUri.getLastPathSegment() );
         imageFilePath.putFile( pickedImgUri ).addOnSuccessListener( new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -219,7 +217,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 .addOnCompleteListener( new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
+                                        if (task.isSuccessful()) {
                                             //user info updated successfully
                                             showMessage( "Register Complete" );
                                             updateUI();
@@ -235,29 +233,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    private void updateUserInfoWithoutPhoto(String name, FirebaseUser currentUser) {
-
-                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                .setDisplayName( name )
-                                .build();
-
-                        currentUser.updateProfile( profileUpdate )
-                                .addOnCompleteListener( new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            //user info updated successfully
-                                            showMessage( "Register Complete" );
-                                            updateUI();
-                                        }
-
-                                    }
-                                } );
-
-    }
-
     private void updateUI() {
-        Intent loginActivity = new Intent(getApplicationContext(),LoginActivity.class); //TODO in the video tutorial Home.class
+        Intent loginActivity = new Intent( getApplicationContext(), LoginActivity.class ); //TODO in the video tutorial Home.class
         startActivity( loginActivity );
         finish();
     }

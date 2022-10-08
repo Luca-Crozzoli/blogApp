@@ -136,11 +136,6 @@ public class PostDetailActivity extends AppCompatActivity {
         txtPostTitle.setText( postTitle );
 
         String userPostImage = getIntent().getExtras().getString( "userPhoto" );
-        if(userPostImage !=null){
-            Glide.with( this ).load( userPostImage ).into( imgUserPost );
-        }else{
-            Glide.with( this ).load( R.drawable.userphoto ).into( imgUserPost );
-        }
         Glide.with( this ).load( userPostImage ).into( imgUserPost );
 
         String postDescription = getIntent().getExtras().getString( "description" );

@@ -27,32 +27,23 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-private FragmentHomeBinding binding;
-RecyclerView postRecyclerView;
-PostAdapter postAdapter;
-FirebaseDatabase firebaseDatabase;
-DatabaseReference databaseReference;
-List<Post> postList;
+    private FragmentHomeBinding binding;
+    RecyclerView postRecyclerView;
+    PostAdapter postAdapter;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    List<Post> postList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState) {
 
-        View fragmentView = inflater.inflate( R.layout.fragment_home,container,false );
+        View fragmentView = inflater.inflate( R.layout.fragment_home, container, false );
         postRecyclerView = fragmentView.findViewById( R.id.postRV );
-        postRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()) );
+        postRecyclerView.setLayoutManager( new LinearLayoutManager( getActivity() ) );
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Posts");
-        return  fragmentView;
+        databaseReference = firebaseDatabase.getReference( "Posts" );
+        return fragmentView;
 
-        /*HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-
-    binding = FragmentHomeBinding.inflate(inflater, container, false);
-    View root = binding.getRoot();
-
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;*/
     }
 
     @Override
@@ -64,12 +55,12 @@ List<Post> postList;
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 postList = new ArrayList<>();
-                for(DataSnapshot postsnap: snapshot.getChildren()){
-                    Post post = postsnap.getValue(Post.class);
-                    postList.add(post);
+                for (DataSnapshot postsnap : snapshot.getChildren()) {
+                    Post post = postsnap.getValue( Post.class );
+                    postList.add( post );
                 }
 
-                postAdapter = new PostAdapter( getActivity(),postList );
+                postAdapter = new PostAdapter( getActivity(), postList );
                 postRecyclerView.setAdapter( postAdapter );
             }
 
@@ -99,7 +90,7 @@ List<Post> postList;
     }
 
     //CAN BE REMOVED?
-    public interface OnFragmentInteractionListener{
+    public interface OnFragmentInteractionListener {
         //TODO update argument type and name
         void onFragmentInteraction(Uri uri);
     }

@@ -94,7 +94,7 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
     }
 
 
-    private void deletePost(String postKey, String imgUrl) {
+    public void deletePost(String postKey, String imgUrl) {
 
         firebaseStorage = FirebaseStorage.getInstance();
         StorageReference imgReference = firebaseStorage.getReferenceFromUrl( imgUrl );

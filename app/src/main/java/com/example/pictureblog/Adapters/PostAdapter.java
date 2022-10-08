@@ -32,7 +32,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //When we create the view holder we are inflating the row_post_item_layout provided in layouts
-        View row = LayoutInflater.from(mContext).inflate( R.layout.row_post_item , parent,false); // the row_post_item.xml
+        View row = LayoutInflater.from( mContext ).inflate( R.layout.row_post_item, parent, false ); // the row_post_item.xml
 
         return new MyViewHolder( row );
     }
@@ -41,17 +41,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         //update the holder with the appropriate values: post image and title of the post and user profile
         // we are calling the methods defined in the post class
-        holder.tvTitle.setText( mData.get(position).getTitle() );
-        Glide.with(mContext).load( mData.get( position ).getPicture() ).into(holder.imgPost);
+        holder.tvTitle.setText( mData.get( position ).getTitle() );
+        Glide.with( mContext ).load( mData.get( position ).getPicture() ).into( holder.imgPost );
 
         String userImg = mData.get( position ).getUserPhoto();
-        if(userImg !=null){
-            Glide.with(mContext).load( userImg ).into(holder.imgPostProfile);
-        }else{
-            Glide.with(mContext).load(R.drawable.userphoto).into(holder.imgPostProfile);
-        }
-
-
+        Glide.with( mContext ).load( userImg ).into( holder.imgPostProfile );
 
     }
 
@@ -60,7 +54,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         return mData.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvTitle;
         ImageView imgPost, imgPostProfile;
@@ -76,11 +70,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             itemView.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent postDetailActivity = new Intent(mContext, PostDetailActivity.class );
+                    Intent postDetailActivity = new Intent( mContext, PostDetailActivity.class );
                     int position = getAdapterPosition();
 
-                    postDetailActivity.putExtra( "title", mData.get(position).getTitle() );
-                    postDetailActivity.putExtra( "postImage",mData.get( position ).getPicture() );
+                    postDetailActivity.putExtra( "title", mData.get( position ).getTitle() );
+                    postDetailActivity.putExtra( "postImage", mData.get( position ).getPicture() );
                     postDetailActivity.putExtra( "description", mData.get( position ).getDescription() );
                     postDetailActivity.putExtra( "postKey", mData.get( position ).getPostKey() );
                     postDetailActivity.putExtra( "userPhoto", mData.get( position ).getUserPhoto() );
@@ -93,8 +87,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                     postDetailActivity.putExtra( "postDate", timestamp );
 
                     //start the activity after passing the different parameter using put extra
-                    mContext.startActivity(postDetailActivity );
-
+                    mContext.startActivity( postDetailActivity );
 
 
                 }

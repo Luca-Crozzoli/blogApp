@@ -21,7 +21,6 @@ import android.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.example.pictureblog.Activities.ui.home.HomeFragment;
 import com.example.pictureblog.Activities.ui.profile.ProfileFragment;
-import com.example.pictureblog.Activities.ui.settings.SettingsFragment;
 import com.example.pictureblog.Models.Post;
 import com.example.pictureblog.R;
 import com.google.android.gms.auth.api.signin.internal.Storage;
@@ -210,13 +209,13 @@ public class Home extends AppCompatActivity {
                     popupClickProgress.setVisibility( View.INVISIBLE );
                     return;
                 }
-               /* if (pickedImgUri == null) {
+                if (pickedImgUri == null) {
                     showMessage( "You need to upload an image for the post!" );
                     popupPostImage.requestFocus();
                     popupAddButton.setVisibility( View.VISIBLE );
                     popupClickProgress.setVisibility( View.INVISIBLE );
                     return;
-                }*/
+                }
 
                 //If everything was okay
                 //TODO create a Post object and save it in the rela time database in Firebase
@@ -232,18 +231,11 @@ public class Home extends AppCompatActivity {
                                 String imageDownloadLink = uri.toString();
                                 // create post Object here after upload the image in firebase storage successfully
 
-                                if(currentUser.getPhotoUrl() !=null) { //WE UPLOAD THE PHOT OF THE USER IF WHEN REGISTERED PROVIDED IT
+
                                     Post post = new Post( postTitle, postDescription, imageDownloadLink, currentUser.getUid(), currentUser.getPhotoUrl().toString() );
-
-                                    //add the post to the database
-                                    addPost( post );
-                                }else{//WE LEAVE THE USER IMAGE PHOTO TO NULL. THIS WILL AUTOMATICALLY UPLOAD THE DEFAULT IMAGE FOR THE USER
-                                    Post post = new Post( postTitle, postDescription, imageDownloadLink, currentUser.getUid(), null );
-
                                     //add the post to the database
                                     addPost( post );
 
-                                }
                             }
                         } ).addOnFailureListener( new OnFailureListener() {
                             @Override
@@ -296,12 +288,23 @@ public class Home extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
+        //Logout of the user
         if (menuItem.getItemId() == R.id.action_settings) {
             FirebaseAuth.getInstance().signOut();
             Intent loginActivity = new Intent( getApplicationContext(), LoginActivity.class );
             startActivity( loginActivity );
             finish();
             return true;
+        }
+        if(menuItem.getItemId() == R.id.delete_settings){
+            Intent deleteActivity = new Intent (getApplicationContext(),DeleteActivity.class);
+            startActivity( deleteActivity );
+            finish();
+            /*Intent loginActivity = new Intent( getApplicationContext(), LoginActivity.class );
+            startActivity( loginActivity );
+            finish();*/
+            return true;
+
         }
         return super.onOptionsItemSelected( menuItem );
     }
@@ -330,12 +333,8 @@ public class Home extends AppCompatActivity {
         navUserMail.setText( currentUser.getEmail() );
 
         //Now we use Glide to upload the image of the user
+        Glide.with( this ).load( currentUser.getPhotoUrl() ).into( navUserPhoto );
 
-        if(currentUser.getPhotoUrl()!=null){
-            Glide.with( this ).load( currentUser.getPhotoUrl() ).into( navUserPhoto );
-        }else {
-            Glide.with( this ).load( R.drawable.userphoto ).into( navUserPhoto );
-        }
     }
 
     /*
