@@ -16,19 +16,23 @@ import com.bumptech.glide.Glide;
 import com.example.pictureblog.Models.Post;
 import com.example.pictureblog.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
 public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.MyViewHolder> {
 
     DatabaseReference databaseReference;
+    FirebaseStorage firebaseStorage;
 
     Context mContext;
     List<Post> mData;
-    Post emptyPost;
+
 
     public PostProfileAdapter(Context mContext, List<Post> mData) {
         this.mContext = mContext;
@@ -78,7 +82,8 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     String postKey = mData.get( position).getPostKey();
-                    deletePost(postKey);
+                    String imgUrl = mData.get( position ).getPicture();
+                    deletePost(postKey,imgUrl);
 
                     Toast.makeText( mContext.getApplicationContext(), "delete clicked", Toast.LENGTH_SHORT ).show();
 
@@ -88,35 +93,42 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
         }
     }
 
-    public PostProfileAdapter(Context mContext, Post emptyPost) {
-        this.mContext = mContext;
-        this.emptyPost = emptyPost;
-    }
 
-    private void deletePost(String postKey) {
-        databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
-        databaseReference.child( postKey ).removeValue().addOnCompleteListener( new OnCompleteListener<Void>() {
+    private void deletePost(String postKey, String imgUrl) {
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference imgReference = firebaseStorage.getReferenceFromUrl( imgUrl );
+        imgReference.delete().addOnSuccessListener( new OnSuccessListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Toast.makeText( mContext, "Cancellation done properly", Toast.LENGTH_SHORT ).show();
-                }else{
-                    Toast.makeText( mContext, "Fail to delete", Toast.LENGTH_SHORT ).show();
-                }
+            public void onSuccess(Void unused) {
+                //if removed successfully from the storage then we need to remove from the database
+                databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
+                databaseReference.child( postKey ).removeValue().addOnCompleteListener( new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText( mContext, "Cancellation of post done", Toast.LENGTH_SHORT ).show();
+                        }else{
+                            Toast.makeText( mContext, "Fail to delete", Toast.LENGTH_SHORT ).show();
+                        }
+                    }
+                } );
+
+                //also we need to remove the corresponding comments related to that image
+                databaseReference = FirebaseDatabase.getInstance().getReference("comment");
+                databaseReference.child( postKey ).removeValue().addOnCompleteListener( new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText( mContext, "Cancellation of related comments done", Toast.LENGTH_SHORT ).show();
+                        }else{
+                            Toast.makeText( mContext, "Fail to delete", Toast.LENGTH_SHORT ).show();
+                        }
+                    }
+                } );
             }
         } );
 
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("comment");
-        databaseReference.child( postKey ).removeValue().addOnCompleteListener( new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Toast.makeText( mContext, "Cancellation done properly", Toast.LENGTH_SHORT ).show();
-                }else{
-                    Toast.makeText( mContext, "Fail to delete", Toast.LENGTH_SHORT ).show();
-                }
-            }
-        } );
     }
 }

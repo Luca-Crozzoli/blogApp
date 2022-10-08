@@ -49,13 +49,13 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View fragmentView = inflater.inflate( R.layout.fragment_profile,container,false );
+        View fragmentView = inflater.inflate( R.layout.fragment_profile, container, false );
         postRecyclerView = fragmentView.findViewById( postRV_profile );
-        postRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()) );
+        postRecyclerView.setLayoutManager( new LinearLayoutManager( getActivity() ) );
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Posts");
+        databaseReference = firebaseDatabase.getReference( "Posts" );
         //databaseReference = firebaseDatabase.getReference("Posts").child( userId );
-        return  fragmentView;
+        return fragmentView;
 
         /*HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
@@ -73,24 +73,23 @@ public class ProfileFragment extends Fragment {
         super.onStart();
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        userId =currentUser.getUid();
+        userId = currentUser.getUid();
         //get List posts from the database only the ones where the user corresponds to the one logged in
         databaseReference.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 postList = new ArrayList<>();
-                for(DataSnapshot postsnap: snapshot.getChildren()){
-                    Post post = postsnap.getValue(Post.class);
-                    String id_userPost = post.getUserId();
-                    if (post.getUserId().equals( userId )){
-                        postList.add(post);
-                   }
+                for (DataSnapshot postsnap : snapshot.getChildren()) {
+                    Post post = postsnap.getValue( Post.class );
+                    if (post.getUserId().equals( userId )) {
+                        postList.add( post );
+                    }
                 }
 
-                if(postList.isEmpty()){
+                if (postList.isEmpty()) {
                     Toast.makeText( getContext(), "NO POSTS UPDATED", Toast.LENGTH_SHORT ).show();
                 }
-                postProfileAdapter = new PostProfileAdapter( getActivity(),postList );
+                postProfileAdapter = new PostProfileAdapter( getActivity(), postList );
                 postRecyclerView.setAdapter( postProfileAdapter );
             }
 
@@ -121,7 +120,7 @@ public class ProfileFragment extends Fragment {
     }
 
     //CAN BE REMOVED?
-    public interface OnFragmentInteractionListener{
+    public interface OnFragmentInteractionListener {
         //TODO update argument type and name
         void onFragmentInteraction(Uri uri);
     }
