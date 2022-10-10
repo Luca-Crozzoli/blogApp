@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:background="@color/white"
         android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/popup_description"
+        app:layout_constraintBottom_toTopOf="@+id/et_place"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/popup_title"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,6 +30,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/et_place"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/popup_edittext_style"
+        android:ems="10"
+        android:hint="Enter place name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popup_title" />
+
+    <EditText
         android:id="@+id/popup_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -38,8 +50,9 @@
         android:hint="Description"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/popup_title" />
+        app:layout_constraintTop_toBottomOf="@+id/et_place" />
 
     <ImageView
         android:id="@+id/popup_img"

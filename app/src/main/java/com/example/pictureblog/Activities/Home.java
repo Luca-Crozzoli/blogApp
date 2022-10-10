@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.example.pictureblog.Activities.ui.home.HomeFragment;
 import com.example.pictureblog.Activities.ui.profile.ProfileFragment;
+import com.example.pictureblog.Helpers.GeoLocation;
 import com.example.pictureblog.Models.Post;
 import com.example.pictureblog.R;
 import com.google.android.gms.auth.api.signin.internal.Storage;
@@ -63,8 +66,9 @@ public class Home extends AppCompatActivity {
 
     //popup widgets references on popup_add_post.xml
     ImageView popupUserImage, popupPostImage, popupAddButton;
-    TextView popupTitle, popupDescription;
+    TextView popupTitle, popupPlace, popupDescription;
     ProgressBar popupClickProgress;
+    String latitudeLongitude;
     private static final int PreqCode = 2;
     private static final int REQUESCODE = 2;
     private Uri pickedImgUri = null;
@@ -100,7 +104,7 @@ public class Home extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_profile, R.id.nav_settings ) //TODO add eventually the R.id.nav_logout
+                R.id.nav_home, R.id.nav_profile )
                 .setOpenableLayout( drawer )
                 .build();
         NavController navController = Navigation.findNavController( this, R.id.nav_host_fragment_content_home );
@@ -178,6 +182,9 @@ public class Home extends AppCompatActivity {
         popupTitle = popAddPost.findViewById( R.id.popup_title );
         popupDescription = popAddPost.findViewById( R.id.popup_description );
 
+        popupPlace = popAddPost.findViewById( R.id.et_place );
+
+
         popupAddButton = popAddPost.findViewById( R.id.popup_add );
         popupClickProgress = popAddPost.findViewById( R.id.popup_progressBar );
 
@@ -191,13 +198,29 @@ public class Home extends AppCompatActivity {
                 popupAddButton.setVisibility( View.INVISIBLE );
                 popupClickProgress.setVisibility( View.VISIBLE );
 
+
                 final String postTitle = popupTitle.getText().toString();
+
+                final String postPlace = popupPlace.getText().toString();
+
+                GeoLocation geoLocation = new GeoLocation();
+                geoLocation.getAddress(postPlace,getApplicationContext(),new GeoHandler());
+
+
+
                 final String postDescription = popupDescription.getText().toString();
 
                 //test all input fields (Title and description) and post image
                 if (postTitle.isEmpty()) {
                     popupTitle.setError( "Title is required" );
                     popupTitle.requestFocus();
+                    popupAddButton.setVisibility( View.VISIBLE );
+                    popupClickProgress.setVisibility( View.INVISIBLE );
+                    return;
+                }
+                if (postPlace.isEmpty()) {
+                    popupPlace.setError( "Place is required" );
+                    popupPlace.requestFocus();
                     popupAddButton.setVisibility( View.VISIBLE );
                     popupClickProgress.setVisibility( View.INVISIBLE );
                     return;
@@ -218,7 +241,7 @@ public class Home extends AppCompatActivity {
                 }
 
                 //If everything was okay
-                //TODO create a Post object and save it in the rela time database in Firebase
+                //TODO create a Post object and save it in the real time database in Firebase
                 //first upload post image to firebase storage
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference().child( "blog_images" );
                 StorageReference imageFilePath = storageReference.child( pickedImgUri.getLastPathSegment() );
@@ -232,9 +255,9 @@ public class Home extends AppCompatActivity {
                                 // create post Object here after upload the image in firebase storage successfully
 
 
-                                    Post post = new Post( postTitle, postDescription, imageDownloadLink, currentUser.getUid(), currentUser.getPhotoUrl().toString() );
-                                    //add the post to the database
-                                    addPost( post );
+                                Post post = new Post( postTitle, postDescription, imageDownloadLink, currentUser.getUid(), currentUser.getPhotoUrl().toString(), latitudeLongitude );
+                                //add the post to the database
+                                addPost( post );
 
                             }
                         } ).addOnFailureListener( new OnFailureListener() {
@@ -256,7 +279,7 @@ public class Home extends AppCompatActivity {
 
     private void addPost(Post post) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Posts").push();
+        DatabaseReference myRef = database.getReference( "Posts" ).push();
 
         // get post unique ID and update post key
         String key = myRef.getKey();
@@ -296,8 +319,8 @@ public class Home extends AppCompatActivity {
             finish();
             return true;
         }
-        if(menuItem.getItemId() == R.id.delete_settings){
-            Intent deleteActivity = new Intent (getApplicationContext(),DeleteActivity.class);
+        if (menuItem.getItemId() == R.id.delete_settings) {
+            Intent deleteActivity = new Intent( getApplicationContext(), DeleteActivity.class );
             startActivity( deleteActivity );
             finish();
             /*Intent loginActivity = new Intent( getApplicationContext(), LoginActivity.class );
@@ -335,6 +358,22 @@ public class Home extends AppCompatActivity {
         //Now we use Glide to upload the image of the user
         Glide.with( this ).load( currentUser.getPhotoUrl() ).into( navUserPhoto );
 
+    }
+
+    private class GeoHandler extends Handler {
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            String address;
+            //check if the code is 1 . this means the address in the message is processed correctly ****
+            if(msg.what == 1){
+                Bundle bundle = msg.getData();
+                address = bundle.getString( "Address" );
+            }else{
+                address = null;
+            }
+           latitudeLongitude = address;
+        }
     }
 
     /*
