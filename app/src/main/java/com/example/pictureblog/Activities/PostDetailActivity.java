@@ -2,10 +2,16 @@ package com.example.pictureblog.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,6 +35,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.views.MapView;
+
+import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,6 +50,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
     ImageView imgPost, imgUserPost, imgCurrentUser;
     TextView txtPostDesc, txtPostDateName, txtPostTitle;
+    MapView post_map;
     EditText editTextComment;
     String PostKey;
 
@@ -55,12 +67,18 @@ public class PostDetailActivity extends AppCompatActivity {
     CommentAdapter commentAdapter;
     List<Comment> listComment;
     static String COMMENT_KEY = "comment";
+    private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_post_detail );
+
+        Context ctx = getApplicationContext();
+        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
+
+
         //transparent status bar TODO is it necessary?
         Window w = getWindow();
         w.setFlags( WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS );
@@ -82,6 +100,12 @@ public class PostDetailActivity extends AppCompatActivity {
 
         editTextComment = findViewById( R.id.post_detail_comment );
         btnAddComment = findViewById( R.id.post_detail_add_comment_btn );
+
+        post_map = (MapView) findViewById( R.id.post_detail_map );
+        post_map.setTileSource( TileSourceFactory.MAPNIK );
+
+        String[] permessi = { "Manifest.permission.ACCESS_FINE_LOCATION"," Manifest.permission.WRITE_EXTERNAL_STORAGE"};
+        requestPermissionsIfNecessary( permessi);
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -201,5 +225,52 @@ public class PostDetailActivity extends AppCompatActivity {
         String date = dataFormat.format( calendar.getTime() );
         return date;
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        post_map.onResume();
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        //this will refresh the osmdroid configuration on resuming.
+        //if you make changes to the configuration, use
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //Configuration.getInstance().save(this, prefs);
+        post_map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult( requestCode, permissions, grantResults );
+        ArrayList<String> permissionsToRequest = new ArrayList<>();
+        for (int i = 0; i < grantResults.length; i++) {
+            permissionsToRequest.add( permissions[i] );
+        }
+        if (permissionsToRequest.size() > 0) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    permissionsToRequest.toArray( new String[0] ),
+                    REQUEST_PERMISSIONS_REQUEST_CODE );
+        }
+    }
+
+    private void requestPermissionsIfNecessary(String[] permissions) {
+        ArrayList<String> permissionsToRequest = new ArrayList<>();
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted
+                permissionsToRequest.add(permission);
+            }
+        }
+        if (permissionsToRequest.size() > 0) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    permissionsToRequest.toArray(new String[0]),
+                    REQUEST_PERMISSIONS_REQUEST_CODE);
+        }
     }
 }
