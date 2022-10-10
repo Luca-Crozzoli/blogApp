@@ -83,6 +83,7 @@
             android:text="Lorem ipsum eocoe va sta andando tutto benissmi cquanrnt noasnn nininn ainidnind in"
             android:textColor="#373737"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/post_detail_date_name" />
 
@@ -120,7 +121,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/post_detail_desc"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_bias="0.008"
             tools:srcCompat="@tools:sample/avatars" />
 
         <Button
@@ -150,13 +151,18 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <org.osmdroid.views.MapView
-            tilesource = "Mapnik"
             android:id="@+id/post_detail_map"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            app:layout_constraintBottom_toTopOf="@+id/post_detail_desc"
-            app:layout_constraintStart_toEndOf="@+id/post_detail_user_img"
-            app:layout_constraintTop_toBottomOf="@+id/view">
+            tilesource="Mapnik"
+            android:layout_width="375dp"
+            android:layout_height="99dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/post_detail_currentuser_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post_detail_desc">
 
         </org.osmdroid.views.MapView>
 

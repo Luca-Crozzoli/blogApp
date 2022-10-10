@@ -35,8 +35,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
 import java.sql.Array;
@@ -75,6 +77,7 @@ public class PostDetailActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_post_detail );
 
+        /*OSMODROID*/
         Context ctx = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
 
@@ -106,6 +109,13 @@ public class PostDetailActivity extends AppCompatActivity {
 
         String[] permessi = { "Manifest.permission.ACCESS_FINE_LOCATION"," Manifest.permission.WRITE_EXTERNAL_STORAGE"};
         requestPermissionsIfNecessary( permessi);
+
+
+        //TODO ADD THE LATITUDE AND LONGITUDE RETRIEVE IT FROM THE DATABASE FIELD
+        IMapController mapController = post_map.getController();
+        mapController.setZoom(9.5);
+        GeoPoint startPoint = new GeoPoint(46.2170505,12.788201899999999);
+        mapController.setCenter(startPoint);
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -227,11 +237,13 @@ public class PostDetailActivity extends AppCompatActivity {
 
     }
 
+    /*OSMODROID*/
     @Override
     protected void onResume() {
         super.onResume();
         post_map.onResume();
     }
+    /*OSMODRODI*/
     @Override
     public void onPause() {
         super.onPause();
@@ -242,6 +254,7 @@ public class PostDetailActivity extends AppCompatActivity {
         post_map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
     }
 
+    /*OSMODROID*/
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult( requestCode, permissions, grantResults );
