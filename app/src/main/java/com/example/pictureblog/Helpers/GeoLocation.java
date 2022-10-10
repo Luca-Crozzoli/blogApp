@@ -44,7 +44,7 @@ public class GeoLocation {
                     if (result != null){
                         message.what = 1; // this is a code unique inside the handler do not worry each handler will have a different code ****
                         Bundle bundle = new Bundle();
-                        result = "Address : "+locationAddress+"\n\n\nLatitude Longitude\n"+result;
+                        result = result; //"Address : "+locationAddress+"\n\n\nLatitude Longitude\n"+result;
                         bundle.putString( "Address",result );
                         message.setData( bundle );
 
