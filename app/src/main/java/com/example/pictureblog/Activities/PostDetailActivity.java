@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -40,10 +42,13 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.OverlayItem;
 
 import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -111,11 +116,7 @@ public class PostDetailActivity extends AppCompatActivity {
         requestPermissionsIfNecessary( permessi);
 
 
-        //TODO ADD THE LATITUDE AND LONGITUDE RETRIEVE IT FROM THE DATABASE FIELD
-        IMapController mapController = post_map.getController();
-        mapController.setZoom(9.5);
-        GeoPoint startPoint = new GeoPoint(46.2170505,12.788201899999999);
-        mapController.setCenter(startPoint);
+
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -186,6 +187,34 @@ public class PostDetailActivity extends AppCompatActivity {
         //retrieve the date of the post
         String date = timeStampToString( getIntent().getExtras().getLong( "postDate" ) );
         txtPostDateName.setText( date );
+
+        String postLocation = getIntent().getExtras().getString( "postLocation" );
+        String [] coordinates = postLocation.split("\n");
+        // https://stackoverflow.com/questions/11873573/converting-a-string-to-an-int-for-an-android-geopoint
+        Double latitude = Double.parseDouble(coordinates[0]);
+        Double longitude = Double.parseDouble(coordinates[1]);
+
+        //TODO ADD THE LATITUDE AND LONGITUDE RETRIEVE IT FROM THE DATABASE FIELD
+        IMapController mapController = post_map.getController();
+        mapController.setZoom(9.5);
+        GeoPoint startPoint = new GeoPoint(latitude,longitude);
+        mapController.setCenter(startPoint);
+
+
+        //Adding the marker for the location where we took the picture
+        Marker markerLocation = new Marker( post_map );
+        markerLocation.setPosition( startPoint );
+
+
+        Drawable myTooltip = getDrawable( R.drawable.marker_map );
+        markerLocation.setIcon( myTooltip );
+        markerLocation.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        post_map.getOverlays().add(markerLocation);
+
+        /*Marker startMarker = new Marker(post_map);
+        startMarker.setPosition(startPoint);
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+        post_map.getOverlays().add(startMarker);*/
 
 
         //initialize Recyclerview of the comments

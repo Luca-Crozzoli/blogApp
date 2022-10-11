@@ -78,6 +78,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                     postDetailActivity.putExtra( "description", mData.get( position ).getDescription() );
                     postDetailActivity.putExtra( "postKey", mData.get( position ).getPostKey() );
                     postDetailActivity.putExtra( "userPhoto", mData.get( position ).getUserPhoto() );
+                    postDetailActivity.putExtra( "postLocation", mData.get( position ).getPostLocation() );
                     //@TODO  fix it later forgot to add userName to post object
                     //postDetailActivity.putExtra( "userName", mData.get( position ).getTimeStamp() );
 
