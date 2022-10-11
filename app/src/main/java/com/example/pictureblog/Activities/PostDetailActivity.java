@@ -116,9 +116,6 @@ public class PostDetailActivity extends AppCompatActivity {
         requestPermissionsIfNecessary( permessi);
 
 
-
-
-
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();

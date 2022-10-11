@@ -89,17 +89,20 @@
 
         <EditText
             android:id="@+id/post_detail_comment"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/edittext_button_style_rounded"
             android:ems="10"
             android:hint="Write comment"
-            android:inputType="textPersonName"
+            android:inputType="text"
             app:layout_constraintBottom_toBottomOf="@+id/post_detail_currentuser_img"
+            app:layout_constraintEnd_toStartOf="@+id/post_detail_add_comment_btn"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/post_detail_currentuser_img"
             app:layout_constraintTop_toTopOf="@+id/post_detail_currentuser_img"
-            app:layout_constraintVertical_bias="0.416" />
+            app:layout_constraintVertical_bias="0.333" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_comments"
@@ -128,15 +131,13 @@
             android:id="@+id/post_detail_add_comment_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/edittext_button_style_rounded"
             android:text="ADD"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/post_detail_comment"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.121"
-            app:layout_constraintStart_toEndOf="@+id/post_detail_comment"
+
             app:layout_constraintTop_toTopOf="@+id/post_detail_comment"
             app:layout_constraintVertical_bias="0.0" />
 
@@ -153,7 +154,7 @@
         <org.osmdroid.views.MapView
             android:id="@+id/post_detail_map"
             tilesource="Mapnik"
-            android:layout_width="357dp"
+            android:layout_width="0dp"
             android:layout_height="205dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
