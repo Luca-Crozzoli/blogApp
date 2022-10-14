@@ -113,10 +113,10 @@ public class PostDetailActivity extends AppCompatActivity {
         editTextComment = findViewById( R.id.post_detail_comment );
         editTextComment.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        /*imm.showSoftInput(editTextComment, InputMethodManager.SHOW_IMPLICIT);*/
+        imm.showSoftInput(editTextComment, InputMethodManager.SHOW_FORCED);
 
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
-        imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);
+        /*imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+        imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);*/
 
         btnAddComment = findViewById( R.id.post_detail_add_comment_btn );
 
@@ -136,10 +136,10 @@ public class PostDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 editTextComment.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                /*imm.showSoftInput(editTextComment, InputMethodManager.SHOW_IMPLICIT);*/
+                imm.showSoftInput(editTextComment, InputMethodManager.SHOW_FORCED);
 
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
-                imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);
+                /*imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+                imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);*/
             }
         } );
 
