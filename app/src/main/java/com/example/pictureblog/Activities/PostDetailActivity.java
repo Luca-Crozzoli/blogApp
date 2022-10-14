@@ -14,9 +14,11 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputFilter;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -103,10 +105,19 @@ public class PostDetailActivity extends AppCompatActivity {
         imgCurrentUser = findViewById( R.id.post_detail_currentuser_img );
 
         txtPostTitle = findViewById( R.id.post_detail_title );
+
         txtPostDesc = findViewById( R.id.post_detail_desc );
+
         txtPostDateName = findViewById( R.id.post_detail_date_name );
 
         editTextComment = findViewById( R.id.post_detail_comment );
+        editTextComment.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        /*imm.showSoftInput(editTextComment, InputMethodManager.SHOW_IMPLICIT);*/
+
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+        imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);
+
         btnAddComment = findViewById( R.id.post_detail_add_comment_btn );
 
         post_map = (MapView) findViewById( R.id.post_detail_map );
@@ -119,6 +130,19 @@ public class PostDetailActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
+
+        editTextComment.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextComment.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                /*imm.showSoftInput(editTextComment, InputMethodManager.SHOW_IMPLICIT);*/
+
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+                imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);
+            }
+        } );
+
 
         //Add comment button on click listener
         btnAddComment.setOnClickListener( new View.OnClickListener() {

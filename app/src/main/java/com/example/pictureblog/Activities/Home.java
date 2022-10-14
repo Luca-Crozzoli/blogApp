@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputFilter;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -180,9 +181,13 @@ public class Home extends AppCompatActivity {
         popupPostImage = popAddPost.findViewById( R.id.popup_img );
 
         popupTitle = popAddPost.findViewById( R.id.popup_title );
+        popupTitle.setFilters(new InputFilter[] {new InputFilter.LengthFilter(60)});
+
         popupDescription = popAddPost.findViewById( R.id.popup_description );
+        popupDescription.setFilters(new InputFilter[] {new InputFilter.LengthFilter(60)});
 
         popupPlace = popAddPost.findViewById( R.id.et_place );
+        popupPlace.setFilters(new InputFilter[] {new InputFilter.LengthFilter(60)});
 
 
         popupAddButton = popAddPost.findViewById( R.id.popup_add );

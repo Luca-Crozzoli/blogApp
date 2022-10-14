@@ -24,7 +24,7 @@
         android:background="@drawable/popup_edittext_style"
         android:ems="10"
         android:hint="Title"
-        android:inputType="textPersonName"
+        android:inputType="text"
         app:layout_constraintEnd_toStartOf="@+id/popup_user_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,7 @@
         android:background="@drawable/popup_edittext_style"
         android:ems="10"
         android:hint="Enter place name"
-        android:inputType="textPersonName"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/popup_title" />
@@ -48,7 +48,7 @@
         android:background="@drawable/popup_edittext_style"
         android:ems="10"
         android:hint="Description"
-        android:inputType="textMultiLine"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
