@@ -47,7 +47,6 @@
             android:ems="10"
             android:hint="Name"
             android:inputType="textPersonName"
-
             app:layout_constraintBottom_toTopOf="@+id/regMail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

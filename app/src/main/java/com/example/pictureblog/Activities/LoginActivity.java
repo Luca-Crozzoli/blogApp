@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         registerText = findViewById( R.id.register_text_view );
 
 
-        //we redirect the user to register Activity if he/she clicks on the photo
+        //we redirect the user to register Activity if he/she clicks on the text view register
         registerText.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 //if the sign in task is done the user is signed in
                 if (task.isSuccessful()) {
-                    loginProgress.setVisibility( View.INVISIBLE );
+                    loginProgress.setVisibility( View.GONE );
                     btnLogin.setVisibility( View.VISIBLE );
                     updateUI();
 

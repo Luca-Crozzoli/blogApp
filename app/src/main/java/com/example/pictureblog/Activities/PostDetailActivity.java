@@ -13,8 +13,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.InputFilter;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -104,25 +106,37 @@ public class PostDetailActivity extends AppCompatActivity {
         imgPost = findViewById( R.id.post_detail_img );
         imgUserPost = findViewById( R.id.post_detail_user_img );
         imgCurrentUser = findViewById( R.id.post_detail_currentuser_img );
-
         txtPostTitle = findViewById( R.id.post_detail_title );
-
         txtPostDesc = findViewById( R.id.post_detail_desc );
-
         txtPostDateName = findViewById( R.id.post_detail_date_name );
-
         editTextComment = findViewById( R.id.post_detail_comment );
-        /*editTextComment.requestFocus();*/
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editTextComment, InputMethodManager.SHOW_IMPLICIT);
 
-        /*imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
-        imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);*/
+        editTextComment.setShowSoftInputOnFocus(true);
+
+        /*editTextComment.setOnFocusChangeListener( new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE );
+                    imm.showSoftInput( editTextComment, InputMethodManager.SHOW_FORCED );
+                }
+            }
+        } );*/
+
+        //editTextComment.requestFocus();
+
+
+        //InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //imm.showSoftInput(editTextComment, InputMethodManager.SHOW_FORCED);
+
+        //imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+        //imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);
 
         btnAddComment = findViewById( R.id.post_detail_add_comment_btn );
 
         post_map = (MapView) findViewById( R.id.post_detail_map );
         post_map.setTileSource( TileSourceFactory.MAPNIK );
+        post_map.clearFocus();
 
         String[] permessi = { "Manifest.permission.ACCESS_FINE_LOCATION"," Manifest.permission.WRITE_EXTERNAL_STORAGE"};
         requestPermissionsIfNecessary( permessi);
@@ -132,16 +146,24 @@ public class PostDetailActivity extends AppCompatActivity {
         currentUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-        editTextComment.setOnClickListener( new View.OnClickListener() {
+        editTextComment.setOnFocusChangeListener( new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editTextComment, InputMethodManager.SHOW_FORCED);
+            }
+        } );
+
+       editTextComment.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextComment.requestFocus();
+                //editTextComment.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(editTextComment, InputMethodManager.SHOW_IMPLICIT);
+                imm.showSoftInput(editTextComment, InputMethodManager.SHOW_FORCED);
 
                 /*imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
                 imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);*/
-            }
+          }
         } );
 
 
@@ -168,6 +190,7 @@ public class PostDetailActivity extends AppCompatActivity {
                         ToastShort ToastS = new ToastShort("comment Added ",getApplicationContext());
                         ToastS.showMessage();
                         editTextComment.setText( "" );
+                        editTextComment.clearFocus();
                         btnAddComment.setVisibility( View.VISIBLE );
                     }
                 } ).addOnFailureListener( new OnFailureListener() {
@@ -234,11 +257,6 @@ public class PostDetailActivity extends AppCompatActivity {
         markerLocation.setIcon( myTooltip );
         markerLocation.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         post_map.getOverlays().add(markerLocation);
-
-        /*Marker startMarker = new Marker(post_map);
-        startMarker.setPosition(startPoint);
-        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
-        post_map.getOverlays().add(startMarker);*/
 
 
         //initialize Recyclerview of the comments
