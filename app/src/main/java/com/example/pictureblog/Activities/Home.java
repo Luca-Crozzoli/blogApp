@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.example.pictureblog.Activities.ui.home.HomeFragment;
 import com.example.pictureblog.Activities.ui.profile.ProfileFragment;
 import com.example.pictureblog.Helpers.GeoLocation;
+import com.example.pictureblog.Helpers.ToastShort;
 import com.example.pictureblog.Models.Post;
 import com.example.pictureblog.R;
 import com.google.android.gms.auth.api.signin.internal.Storage;
@@ -238,7 +239,8 @@ public class Home extends AppCompatActivity {
                     return;
                 }
                 if (pickedImgUri == null) {
-                    showMessage( "You need to upload an image for the post!" );
+                    ToastShort ToastS = new ToastShort("You need to upload an Image for the post",getApplicationContext());
+                    ToastS.showMessage();
                     popupPostImage.requestFocus();
                     popupAddButton.setVisibility( View.VISIBLE );
                     popupClickProgress.setVisibility( View.INVISIBLE );
@@ -269,7 +271,8 @@ public class Home extends AppCompatActivity {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 //something goes wrong uploading the post
-                                showMessage( e.getMessage() );
+                                ToastShort ToastS = new ToastShort(e.getMessage(),getApplicationContext());
+                                ToastS.showMessage();
                                 popupClickProgress.setVisibility( View.INVISIBLE );
                                 popupAddButton.setVisibility( View.VISIBLE );
                             }
@@ -294,16 +297,13 @@ public class Home extends AppCompatActivity {
         myRef.setValue( post ).addOnSuccessListener( new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                showMessage( "Post added correctly!" );
+                ToastShort ToastS = new ToastShort("Post added correctly!",getApplicationContext());
+                ToastS.showMessage();
                 popupClickProgress.setVisibility( View.INVISIBLE );
                 popupAddButton.setVisibility( View.VISIBLE );
                 popAddPost.dismiss();
             }
         } );
-    }
-
-    private void showMessage(String message) {
-        Toast.makeText( getApplicationContext(), message, Toast.LENGTH_LONG ).show();
     }
 
 

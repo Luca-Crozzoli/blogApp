@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.pictureblog.Adapters.CommentAdapter;
+import com.example.pictureblog.Helpers.ToastShort;
 import com.example.pictureblog.Models.Comment;
 import com.example.pictureblog.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -111,9 +112,9 @@ public class PostDetailActivity extends AppCompatActivity {
         txtPostDateName = findViewById( R.id.post_detail_date_name );
 
         editTextComment = findViewById( R.id.post_detail_comment );
-        editTextComment.requestFocus();
+        /*editTextComment.requestFocus();*/
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editTextComment, InputMethodManager.SHOW_FORCED);
+        imm.showSoftInput(editTextComment, InputMethodManager.SHOW_IMPLICIT);
 
         /*imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
         imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);*/
@@ -136,7 +137,7 @@ public class PostDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 editTextComment.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(editTextComment, InputMethodManager.SHOW_FORCED);
+                imm.showSoftInput(editTextComment, InputMethodManager.SHOW_IMPLICIT);
 
                 /*imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
                 imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);*/
@@ -164,14 +165,16 @@ public class PostDetailActivity extends AppCompatActivity {
                 commentReference.setValue( comment ).addOnSuccessListener( new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        showMessage("comment Added ");
+                        ToastShort ToastS = new ToastShort("comment Added ",getApplicationContext());
+                        ToastS.showMessage();
                         editTextComment.setText( "" );
                         btnAddComment.setVisibility( View.VISIBLE );
                     }
                 } ).addOnFailureListener( new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        showMessage("Fail to add the comment"+ e.getMessage());
+                        ToastShort ToastS = new ToastShort("Fail to add the comment"+ e.getMessage(),getApplicationContext());
+                        ToastS.showMessage();
                     }
                 } );
 
@@ -273,10 +276,6 @@ public class PostDetailActivity extends AppCompatActivity {
         } );
     }
 
-    private void showMessage(String message) {
-        Toast.makeText( this,message, Toast.LENGTH_LONG ).show();
-
-    }
 
     private String timeStampToString(long time) {
         Calendar calendar = Calendar.getInstance( Locale.ITALIAN );

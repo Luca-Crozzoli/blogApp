@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pictureblog.Helpers.ToastShort;
 import com.example.pictureblog.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -126,16 +127,6 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                //TODO this is a commented if statement because we are implementi anothr method to allow the user registration without
-                //uploading the user photo
-                /*if(imgUserPhoto.getDrawable().getConstantState()==getResources().getDrawable(R.drawable.userphoto,getTheme() ).getConstantState()){
-                    showMessage( "You need to upload your image!" );
-                    imgUserPhoto.requestFocus();
-                    regButton.setVisibility( View.VISIBLE );
-                    progressBar.setVisibility( View.INVISIBLE );
-                    return;
-                }*/
-
                 //Everything is okay then we can start to create a new user
                 //create user account method will try to create the user if the email is valid
 
@@ -166,19 +157,20 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void CreateUserAccount(String name, String mail, String password) {
-        //this method create user account with specific email and password
         mAuth.createUserWithEmailAndPassword( mail, password )
                 .addOnCompleteListener( this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //user account created successfully
-                            showMessage( "New User account registration done!" );
+                            ToastShort ToastS = new ToastShort( "New User account registration done!", getApplicationContext() );
+                            ToastS.showMessage();
                             //after created the user account we need to update his picture and name
                             updateUserInfo( name, pickedImgUri, mAuth.getCurrentUser() );
                         } else {
                             //user account creation failed
-                            showMessage( "New user registration failed" + task.getException().getMessage() );
+                            ToastShort ToastS = new ToastShort( "New user registration failed" + task.getException().getMessage(), getApplicationContext() );
+                            ToastS.showMessage();
                             regButton.setVisibility( View.VISIBLE );
                             progressBar.setVisibility( View.INVISIBLE );
                         }
@@ -186,24 +178,21 @@ public class RegisterActivity extends AppCompatActivity {
                 } );
     }
 
-    // update user name and image
     private void updateUserInfo(String name, Uri pickedImgUri, FirebaseUser currentUser) {
         //first upload user image to firebase storage and get url
         StorageReference mStorage = FirebaseStorage.getInstance().getReference().child( "users_photos" );
         //if no image is picked set the uri with the default image we have in drawable
-        if(pickedImgUri == null){
+        if (pickedImgUri == null) {
             Resources resources = getResources();
-            pickedImgUri = Uri.parse( ContentResolver.SCHEME_ANDROID_RESOURCE+"://"+ resources.getResourcePackageName( R.drawable.userphoto)+'/'+
-                    resources.getResourceTypeName( R.drawable.userphoto )+'/'+
-                    resources.getResourceEntryName( R.drawable.userphoto ));
+            pickedImgUri = Uri.parse( ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + resources.getResourcePackageName( R.drawable.userphoto ) + '/' +
+                    resources.getResourceTypeName( R.drawable.userphoto ) + '/' +
+                    resources.getResourceEntryName( R.drawable.userphoto ) );
         }
         StorageReference imageFilePath = mStorage.child( pickedImgUri.getLastPathSegment() );
         imageFilePath.putFile( pickedImgUri ).addOnSuccessListener( new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // image uploaded successfully
-                //now we can get our image url
-
+                // image uploaded successfully, we can get image url
                 imageFilePath.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
@@ -219,7 +208,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             //user info updated successfully
-                                            showMessage( "Register Complete" );
+                                            ToastShort ToastS = new ToastShort( "Registraton Completed", getApplicationContext() );
+                                            ToastS.showMessage();
                                             updateUI();
                                         }
 
@@ -234,14 +224,9 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void updateUI() {
-        Intent loginActivity = new Intent( getApplicationContext(), LoginActivity.class ); //TODO in the video tutorial Home.class
-        startActivity( loginActivity );
+        Intent homeActivity = new Intent( getApplicationContext(), Home.class ); //TODO in the video tutorial Home.class
+        startActivity( homeActivity );
         finish();
-    }
-
-    //simple method to show toast message
-    private void showMessage(String message) {
-        Toast.makeText( getApplicationContext(), message, Toast.LENGTH_LONG ).show();
     }
 
 

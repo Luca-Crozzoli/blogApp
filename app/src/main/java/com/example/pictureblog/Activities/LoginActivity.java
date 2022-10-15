@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.pictureblog.Helpers.ToastShort;
 import com.example.pictureblog.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -121,7 +122,8 @@ public class LoginActivity extends AppCompatActivity {
                     updateUI();
 
                 }else{
-                    showMessage( task.getException().getMessage() );
+                    ToastShort ToastS = new ToastShort(task.getException().getMessage(),getApplicationContext());
+                    ToastS.showMessage();
                     btnLogin.setVisibility( View.VISIBLE );
                     loginProgress.setVisibility( View.INVISIBLE );
                 }
@@ -136,11 +138,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity( homeActivity );
         finish();
     }
-
-    private void showMessage(String message){
-        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
-    }
-
 
     //We do the override to let the user logged in if it is already logged in
     @Override

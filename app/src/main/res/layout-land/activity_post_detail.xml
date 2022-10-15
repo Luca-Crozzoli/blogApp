@@ -102,12 +102,14 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_comments"
-            android:layout_width="341dp"
-            android:layout_height="133dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/post_detail_add_comment_btn"
             app:layout_constraintTop_toTopOf="@+id/post_detail_add_comment_btn" />
 
         <ImageView
@@ -121,8 +123,8 @@
 
         <Button
             android:id="@+id/post_detail_add_comment_btn"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="74dp"
+            android:layout_height="49dp"
             android:layout_marginStart="8dp"
 
             android:layout_marginEnd="8dp"
@@ -132,8 +134,10 @@
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="@+id/post_detail_comment"
             app:layout_constraintEnd_toStartOf="@+id/rv_comments"
+            app:layout_constraintHorizontal_bias="0.014"
             app:layout_constraintStart_toEndOf="@+id/post_detail_comment"
-            app:layout_constraintTop_toTopOf="@+id/post_detail_comment" />
+            app:layout_constraintTop_toTopOf="@+id/post_detail_comment"
+            app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
             android:id="@+id/post_detail_user_img"
