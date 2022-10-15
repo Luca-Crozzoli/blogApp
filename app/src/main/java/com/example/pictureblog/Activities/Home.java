@@ -221,21 +221,21 @@ public class Home extends AppCompatActivity {
                     popupTitle.setError( "Title is required" );
                     popupTitle.requestFocus();
                     popupAddButton.setVisibility( View.VISIBLE );
-                    popupClickProgress.setVisibility( View.INVISIBLE );
+                    popupClickProgress.setVisibility( View.GONE );
                     return;
                 }
                 if (postPlace.isEmpty()) {
                     popupPlace.setError( "Place is required" );
                     popupPlace.requestFocus();
                     popupAddButton.setVisibility( View.VISIBLE );
-                    popupClickProgress.setVisibility( View.INVISIBLE );
+                    popupClickProgress.setVisibility( View.GONE );
                     return;
                 }
                 if (postDescription.isEmpty()) {
                     popupDescription.setError( "Description is required" );
                     popupDescription.requestFocus();
                     popupAddButton.setVisibility( View.VISIBLE );
-                    popupClickProgress.setVisibility( View.INVISIBLE );
+                    popupClickProgress.setVisibility( View.GONE );
                     return;
                 }
                 if (pickedImgUri == null) {
@@ -243,7 +243,7 @@ public class Home extends AppCompatActivity {
                     ToastS.showMessage();
                     popupPostImage.requestFocus();
                     popupAddButton.setVisibility( View.VISIBLE );
-                    popupClickProgress.setVisibility( View.INVISIBLE );
+                    popupClickProgress.setVisibility( View.GONE );
                     return;
                 }
 
@@ -273,7 +273,7 @@ public class Home extends AppCompatActivity {
                                 //something goes wrong uploading the post
                                 ToastShort ToastS = new ToastShort(e.getMessage(),getApplicationContext());
                                 ToastS.showMessage();
-                                popupClickProgress.setVisibility( View.INVISIBLE );
+                                popupClickProgress.setVisibility( View.GONE );
                                 popupAddButton.setVisibility( View.VISIBLE );
                             }
                         } );
@@ -299,7 +299,11 @@ public class Home extends AppCompatActivity {
             public void onSuccess(Void unused) {
                 ToastShort ToastS = new ToastShort("Post added correctly!",getApplicationContext());
                 ToastS.showMessage();
-                popupClickProgress.setVisibility( View.INVISIBLE );
+                popupTitle.setText( "" );
+                popupPlace.setText( "" );
+                popupDescription.setText( "" );
+                popupPostImage.setImageURI( null );
+                popupClickProgress.setVisibility( View.GONE );
                 popupAddButton.setVisibility( View.VISIBLE );
                 popAddPost.dismiss();
             }

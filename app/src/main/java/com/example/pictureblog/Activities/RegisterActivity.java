@@ -83,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
                     userName.setError( "Full Name is required" );
                     userName.requestFocus();
                     regButton.setVisibility( View.VISIBLE );
-                    progressBar.setVisibility( View.INVISIBLE );
+                    progressBar.setVisibility( View.GONE );
                     return;
                 }
 
@@ -91,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
                     userEmail.setError( "Mail is required" );
                     userEmail.requestFocus();
                     regButton.setVisibility( View.VISIBLE );
-                    progressBar.setVisibility( View.INVISIBLE );
+                    progressBar.setVisibility( View.GONE );
                     return;
                 }
 
@@ -99,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
                     userEmail.setError( "Provide a valid Mail" );
                     userEmail.requestFocus();
                     regButton.setVisibility( View.VISIBLE );
-                    progressBar.setVisibility( View.INVISIBLE );
+                    progressBar.setVisibility( View.GONE );
                     return;
                 }
 
@@ -107,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
                     userPassword.setError( "Password is required" );
                     userPassword.requestFocus();
                     regButton.setVisibility( View.VISIBLE );
-                    progressBar.setVisibility( View.INVISIBLE );
+                    progressBar.setVisibility( View.GONE );
                     return;
                 }
                 //for firebase the password must be at least 6 chars long
@@ -115,15 +115,15 @@ public class RegisterActivity extends AppCompatActivity {
                     userPassword.setError( "Min length 6 characters" );
                     userPassword.requestFocus();
                     regButton.setVisibility( View.VISIBLE );
-                    progressBar.setVisibility( View.INVISIBLE );
+                    progressBar.setVisibility( View.GONE );
                     return;
                 }
 
                 if (!password.equals( password2 )) {
-                    userPassword2.setError( "The 2 password do not correspond" );
+                    userPassword2.setError( "The passwords do not correspond" );
                     userPassword2.requestFocus();
                     regButton.setVisibility( View.VISIBLE );
-                    progressBar.setVisibility( View.INVISIBLE );
+                    progressBar.setVisibility( View.GONE );
                     return;
                 }
 
@@ -172,7 +172,7 @@ public class RegisterActivity extends AppCompatActivity {
                             ToastShort ToastS = new ToastShort( "New user registration failed" + task.getException().getMessage(), getApplicationContext() );
                             ToastS.showMessage();
                             regButton.setVisibility( View.VISIBLE );
-                            progressBar.setVisibility( View.INVISIBLE );
+                            progressBar.setVisibility( View.GONE );
                         }
                     }
                 } );
@@ -208,7 +208,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             //user info updated successfully
-                                            ToastShort ToastS = new ToastShort( "Registraton Completed", getApplicationContext() );
+                                            ToastShort ToastS = new ToastShort( "Registration Completed", getApplicationContext() );
                                             ToastS.showMessage();
                                             updateUI();
                                         }
@@ -224,7 +224,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void updateUI() {
-        Intent homeActivity = new Intent( getApplicationContext(), Home.class ); //TODO in the video tutorial Home.class
+        Intent homeActivity = new Intent( getApplicationContext(), LoginActivity.class ); //TODO in the video tutorial Home.class
         startActivity( homeActivity );
         finish();
     }

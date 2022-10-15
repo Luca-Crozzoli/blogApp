@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.pictureblog.Helpers.ToastShort;
 import com.example.pictureblog.R;
@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     //Initialize the intent used in the updateUI method
     private Intent homeActivity;
     private ImageView loginPhoto;
+    private TextView registerText, forgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,28 +42,40 @@ public class LoginActivity extends AppCompatActivity {
         userPassword = findViewById( R.id.login_password );
 
         loginProgress = findViewById( R.id.login_progress );
-        loginProgress.setVisibility( View.INVISIBLE );
+        loginProgress.setVisibility( View.GONE );
 
         //Get the firebase instance
         mAuth = FirebaseAuth.getInstance();
         //initialize the Intent to move user at home after the login
-        homeActivity = new Intent(this, Home.class);
+        homeActivity = new Intent( this, Home.class );
 
         loginPhoto = findViewById( R.id.login_photo );
 
+        registerText = findViewById( R.id.register_text_view );
+
+
         //we redirect the user to register Activity if he/she clicks on the photo
-        loginPhoto.setOnClickListener( new View.OnClickListener() {
+        registerText.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent registerActivity = new Intent(getApplicationContext(), RegisterActivity.class);
+                Intent registerActivity = new Intent( getApplicationContext(), RegisterActivity.class );
                 startActivity( registerActivity );
                 finish();
             }
         } );
 
+        forgotPassword = findViewById( R.id.forgot_password );
+        forgotPassword.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent forgotPasswordActivity = new Intent( getApplicationContext(), ForgotPasswordActivity.class );
+                startActivity( forgotPasswordActivity );
+                finish();
+            }
+        } );
 
 
-        btnLogin=findViewById( R.id.logout_button );
+        btnLogin = findViewById( R.id.login_button );
         btnLogin.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                     userMail.setError( "Mail is required" );
                     userMail.requestFocus();
                     btnLogin.setVisibility( View.VISIBLE );
-                    loginProgress.setVisibility( View.INVISIBLE );
+                    loginProgress.setVisibility( View.GONE );
                     return;
                 }
 
@@ -85,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                     userMail.setError( "Provide a valid Mail" );
                     userMail.requestFocus();
                     btnLogin.setVisibility( View.VISIBLE );
-                    loginProgress.setVisibility( View.INVISIBLE );
+                    loginProgress.setVisibility( View.GONE );
                     return;
                 }
 
@@ -93,39 +106,39 @@ public class LoginActivity extends AppCompatActivity {
                     userPassword.setError( "Password is required" );
                     userPassword.requestFocus();
                     btnLogin.setVisibility( View.VISIBLE );
-                    loginProgress.setVisibility( View.INVISIBLE );
+                    loginProgress.setVisibility( View.GONE );
                     return;
                 }
 
-                if(password.length()<6){
+                if (password.length() < 6) {
                     userPassword.setError( "Password doesn't satisfy the length of 6 characters" );
                     userPassword.requestFocus();
                     btnLogin.setVisibility( View.VISIBLE );
-                    loginProgress.setVisibility( View.INVISIBLE );
+                    loginProgress.setVisibility( View.GONE );
                     return;
 
                 }
 
-                signIn(mail,password);
+                signIn( mail, password );
             }
         } );
     }
 
     private void signIn(String mail, String password) {
-        mAuth.signInWithEmailAndPassword( mail,password ).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword( mail, password ).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 //if the sign in task is done the user is signed in
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     loginProgress.setVisibility( View.INVISIBLE );
                     btnLogin.setVisibility( View.VISIBLE );
                     updateUI();
 
-                }else{
-                    ToastShort ToastS = new ToastShort(task.getException().getMessage(),getApplicationContext());
+                } else {
+                    ToastShort ToastS = new ToastShort( task.getException().getMessage(), getApplicationContext() );
                     ToastS.showMessage();
                     btnLogin.setVisibility( View.VISIBLE );
-                    loginProgress.setVisibility( View.INVISIBLE );
+                    loginProgress.setVisibility( View.GONE );
                 }
 
             }
@@ -145,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
 
-        if(user !=null){
+        if (user != null) {
             //user is already connected , need to redirect him to home page
             updateUI();
         }
