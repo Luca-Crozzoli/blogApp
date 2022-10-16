@@ -87,11 +87,6 @@ public class PostDetailActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_post_detail );
 
-        /*OSMODROID*/
-        Context ctx = getApplicationContext();
-        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
-
-
         //transparent status bar TODO is it necessary?
         Window w = getWindow();
         w.setFlags( WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS );
@@ -110,61 +105,22 @@ public class PostDetailActivity extends AppCompatActivity {
         txtPostDesc = findViewById( R.id.post_detail_desc );
         txtPostDateName = findViewById( R.id.post_detail_date_name );
         editTextComment = findViewById( R.id.post_detail_comment );
-
-        editTextComment.setShowSoftInputOnFocus(true);
-
-        /*editTextComment.setOnFocusChangeListener( new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE );
-                    imm.showSoftInput( editTextComment, InputMethodManager.SHOW_FORCED );
-                }
-            }
-        } );*/
-
-        //editTextComment.requestFocus();
-
-
-        //InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        //imm.showSoftInput(editTextComment, InputMethodManager.SHOW_FORCED);
-
-        //imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
-        //imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);
-
         btnAddComment = findViewById( R.id.post_detail_add_comment_btn );
+
+        /*OSMODROID*/
+        Context ctx = getApplicationContext();
+        Configuration.getInstance().load( ctx, PreferenceManager.getDefaultSharedPreferences( ctx ) );
 
         post_map = (MapView) findViewById( R.id.post_detail_map );
         post_map.setTileSource( TileSourceFactory.MAPNIK );
-        post_map.clearFocus();
 
-        String[] permessi = { "Manifest.permission.ACCESS_FINE_LOCATION"," Manifest.permission.WRITE_EXTERNAL_STORAGE"};
-        requestPermissionsIfNecessary( permessi);
+        String[] permessi = {"Manifest.permission.ACCESS_FINE_LOCATION", " Manifest.permission.WRITE_EXTERNAL_STORAGE"};
+        requestPermissionsIfNecessary( permessi );
 
 
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
-
-        editTextComment.setOnFocusChangeListener( new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(editTextComment, InputMethodManager.SHOW_FORCED);
-            }
-        } );
-
-       editTextComment.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //editTextComment.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(editTextComment, InputMethodManager.SHOW_FORCED);
-
-                /*imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
-                imm.showSoftInput(editTextComment,InputMethodManager.SHOW_FORCED);*/
-          }
-        } );
 
 
         //Add comment button on click listener
@@ -173,7 +129,7 @@ public class PostDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //after a click on the add button the button must be invisible
-                btnAddComment.setVisibility( View.INVISIBLE);
+                btnAddComment.setVisibility( View.INVISIBLE );
 
                 DatabaseReference commentReference = firebaseDatabase.getReference( COMMENT_KEY ).child( PostKey ).push();
                 String comment_content = editTextComment.getText().toString();
@@ -182,12 +138,12 @@ public class PostDetailActivity extends AppCompatActivity {
                 String uimg = currentUser.getPhotoUrl().toString();
 
                 //Create a new instance of a comment object
-                Comment comment = new Comment(comment_content,uid,uimg,uname);
+                Comment comment = new Comment( comment_content, uid, uimg, uname );
 
                 commentReference.setValue( comment ).addOnSuccessListener( new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        ToastShort ToastS = new ToastShort("comment Added ",getApplicationContext());
+                        ToastShort ToastS = new ToastShort( "comment Added ", getApplicationContext() );
                         ToastS.showMessage();
                         editTextComment.setText( "" );
                         editTextComment.clearFocus();
@@ -196,7 +152,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 } ).addOnFailureListener( new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        ToastShort ToastS = new ToastShort("Fail to add the comment"+ e.getMessage(),getApplicationContext());
+                        ToastShort ToastS = new ToastShort( "Fail to add the comment" + e.getMessage(), getApplicationContext() );
                         ToastS.showMessage();
                     }
                 } );
@@ -227,7 +183,6 @@ public class PostDetailActivity extends AppCompatActivity {
         Glide.with( this ).load( currentUser.getPhotoUrl() ).into( imgCurrentUser );
 
 
-
         //retrieve the post id
         PostKey = getIntent().getExtras().getString( "postKey" );
 
@@ -236,16 +191,16 @@ public class PostDetailActivity extends AppCompatActivity {
         txtPostDateName.setText( date );
 
         String postLocation = getIntent().getExtras().getString( "postLocation" );
-        String [] coordinates = postLocation.split("\n");
+        String[] coordinates = postLocation.split( "\n" );
         // https://stackoverflow.com/questions/11873573/converting-a-string-to-an-int-for-an-android-geopoint
-        Double latitude = Double.parseDouble(coordinates[0]);
-        Double longitude = Double.parseDouble(coordinates[1]);
+        Double latitude = Double.parseDouble( coordinates[0] );
+        Double longitude = Double.parseDouble( coordinates[1] );
 
         //TODO ADD THE LATITUDE AND LONGITUDE RETRIEVE IT FROM THE DATABASE FIELD
         IMapController mapController = post_map.getController();
-        mapController.setZoom(9.5);
-        GeoPoint startPoint = new GeoPoint(latitude,longitude);
-        mapController.setCenter(startPoint);
+        mapController.setZoom( 9.5 );
+        GeoPoint startPoint = new GeoPoint( latitude, longitude );
+        mapController.setCenter( startPoint );
 
 
         //Adding the marker for the location where we took the picture
@@ -255,8 +210,8 @@ public class PostDetailActivity extends AppCompatActivity {
 
         Drawable myTooltip = getDrawable( R.drawable.marker_map );
         markerLocation.setIcon( myTooltip );
-        markerLocation.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        post_map.getOverlays().add(markerLocation);
+        markerLocation.setAnchor( Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM );
+        post_map.getOverlays().add( markerLocation );
 
 
         //initialize Recyclerview of the comments
@@ -271,18 +226,18 @@ public class PostDetailActivity extends AppCompatActivity {
 
         rVComment.setLayoutManager( new LinearLayoutManager( this ) );
 
-        DatabaseReference commentRef = firebaseDatabase.getReference(COMMENT_KEY).child(PostKey);
+        DatabaseReference commentRef = firebaseDatabase.getReference( COMMENT_KEY ).child( PostKey );
         commentRef.addValueEventListener( new ValueEventListener() {
 
             //https://stackoverflow.com/questions/61703700/when-to-use-datasnapshot-getchildren
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listComment = new ArrayList<>();
-                for(DataSnapshot snap : snapshot.getChildren()){
-                    Comment comment = snap.getValue(Comment.class);
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    Comment comment = snap.getValue( Comment.class );
                     listComment.add( comment );
                 }
-                commentAdapter = new CommentAdapter( getApplicationContext(),listComment );
+                commentAdapter = new CommentAdapter( getApplicationContext(), listComment );
                 rVComment.setAdapter( commentAdapter );
 
             }
@@ -304,53 +259,20 @@ public class PostDetailActivity extends AppCompatActivity {
 
     }
 
-    /*OSMODROID*/
-    @Override
-    protected void onResume() {
-        super.onResume();
-        post_map.onResume();
-    }
-    /*OSMODRODI*/
-    @Override
-    public void onPause() {
-        super.onPause();
-        //this will refresh the osmdroid configuration on resuming.
-        //if you make changes to the configuration, use
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //Configuration.getInstance().save(this, prefs);
-        post_map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
-    }
-
-    /*OSMODROID*/
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult( requestCode, permissions, grantResults );
+    private void requestPermissionsIfNecessary(String[] permissions) {
         ArrayList<String> permissionsToRequest = new ArrayList<>();
-        for (int i = 0; i < grantResults.length; i++) {
-            permissionsToRequest.add( permissions[i] );
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission( this, permission )
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted
+                permissionsToRequest.add( permission );
+            }
         }
         if (permissionsToRequest.size() > 0) {
             ActivityCompat.requestPermissions(
                     this,
                     permissionsToRequest.toArray( new String[0] ),
                     REQUEST_PERMISSIONS_REQUEST_CODE );
-        }
-    }
-
-    private void requestPermissionsIfNecessary(String[] permissions) {
-        ArrayList<String> permissionsToRequest = new ArrayList<>();
-        for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(this, permission)
-                    != PackageManager.PERMISSION_GRANTED) {
-                // Permission is not granted
-                permissionsToRequest.add(permission);
-            }
-        }
-        if (permissionsToRequest.size() > 0) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    permissionsToRequest.toArray(new String[0]),
-                    REQUEST_PERMISSIONS_REQUEST_CODE);
         }
     }
 }
