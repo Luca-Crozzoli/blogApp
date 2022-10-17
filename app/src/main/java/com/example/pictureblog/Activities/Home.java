@@ -1,9 +1,7 @@
 package com.example.pictureblog.Activities;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -18,28 +16,20 @@ import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
-import com.example.pictureblog.Activities.ui.home.HomeFragment;
-import com.example.pictureblog.Activities.ui.profile.ProfileFragment;
 import com.example.pictureblog.Helpers.GeoLocation;
 import com.example.pictureblog.Helpers.ToastShort;
 import com.example.pictureblog.Models.Post;
 import com.example.pictureblog.R;
-import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.TaskStackBuilder;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -71,8 +61,6 @@ public class Home extends AppCompatActivity {
     TextView popupTitle, popupPlace, popupDescription;
     ProgressBar popupClickProgress;
     String latitudeLongitude;
-    private static final int PreqCode = 2;
-    private static final int REQUESCODE = 2;
     private Uri pickedImgUri = null;
 
 
@@ -119,53 +107,27 @@ public class Home extends AppCompatActivity {
 
     //here we take the reference of the image view used in the pop_up_add_post Layout
     private void setupPopupImageClick() {
+
         popupPostImage.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //here when image clicked we need to open the gallery
-                //before open the gallery check if the app have acess to user file (like in the register activity)
-                checkAndRequestForPermission();
-
+                ImagePicker.Companion.with( Home.this )
+                        /*.crop()	    			//Crop image(Optional), Check Customization for more option
+                        .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                        .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)*/
+                        .start();
             }
         } );
     }
 
-
-    //Code used to check permission to access the gallery ot upload an image
-    private void checkAndRequestForPermission() {
-        //If the permission are not allowed!!
-        if (ContextCompat.checkSelfPermission( Home.this, Manifest.permission.READ_EXTERNAL_STORAGE ) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale( Home.this, Manifest.permission.READ_EXTERNAL_STORAGE )) {
-                Toast.makeText( Home.this, "Please accept for required permission", Toast.LENGTH_LONG ).show();
-            } else {
-                ActivityCompat.requestPermissions( Home.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PreqCode );
-            }
-        } else {
-            //we have all the permission to access user gallery
-            openGallery();
-        }
-
-    }
-
-    private void openGallery() {
-        //TODO: openGallery intent and wait for user to pick a photo
-        Intent galleryIntent = new Intent( Intent.ACTION_GET_CONTENT );
-        galleryIntent.setType( "image/*" );
-        startActivityForResult( galleryIntent, REQUESCODE ); //TODO deprecated method find an alternative!!
-
-    }
 
     //When user picked an image...
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
 
-        if (resultCode == RESULT_OK && requestCode == REQUESCODE && data != null) {
-            //the user has successfully picked the image
-            // we need to save its reference to a URI variable
-            pickedImgUri = data.getData();
-            popupPostImage.setImageURI( pickedImgUri );
-        }
+        pickedImgUri = data.getData();
+        popupPostImage.setImageURI( pickedImgUri );
     }
 
     //method to initialize the pop up menu used to upload a post
@@ -182,13 +144,13 @@ public class Home extends AppCompatActivity {
         popupPostImage = popAddPost.findViewById( R.id.popup_img );
 
         popupTitle = popAddPost.findViewById( R.id.popup_title );
-        popupTitle.setFilters(new InputFilter[] {new InputFilter.LengthFilter(60)});
+        popupTitle.setFilters( new InputFilter[]{new InputFilter.LengthFilter( 60 )} );
 
         popupDescription = popAddPost.findViewById( R.id.popup_description );
-        popupDescription.setFilters(new InputFilter[] {new InputFilter.LengthFilter(60)});
+        popupDescription.setFilters( new InputFilter[]{new InputFilter.LengthFilter( 60 )} );
 
         popupPlace = popAddPost.findViewById( R.id.et_place );
-        popupPlace.setFilters(new InputFilter[] {new InputFilter.LengthFilter(60)});
+        popupPlace.setFilters( new InputFilter[]{new InputFilter.LengthFilter( 60 )} );
 
 
         popupAddButton = popAddPost.findViewById( R.id.popup_add );
@@ -210,8 +172,7 @@ public class Home extends AppCompatActivity {
                 final String postPlace = popupPlace.getText().toString();
 
                 GeoLocation geoLocation = new GeoLocation();
-                geoLocation.getAddress(postPlace,getApplicationContext(),new GeoHandler());
-
+                geoLocation.getAddress( postPlace, getApplicationContext(), new GeoHandler() );
 
 
                 final String postDescription = popupDescription.getText().toString();
@@ -239,7 +200,7 @@ public class Home extends AppCompatActivity {
                     return;
                 }
                 if (pickedImgUri == null) {
-                    ToastShort ToastS = new ToastShort("You need to upload an Image for the post",getApplicationContext());
+                    ToastShort ToastS = new ToastShort( "You need to upload an Image for the post", getApplicationContext() );
                     ToastS.showMessage();
                     popupPostImage.requestFocus();
                     popupAddButton.setVisibility( View.VISIBLE );
@@ -248,7 +209,7 @@ public class Home extends AppCompatActivity {
                 }
 
                 //If everything was okay
-                //TODO create a Post object and save it in the real time database in Firebase
+                //create a Post object and save it in the real time database in Firebase
                 //first upload post image to firebase storage
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference().child( "blog_images" );
                 StorageReference imageFilePath = storageReference.child( pickedImgUri.getLastPathSegment() );
@@ -271,7 +232,7 @@ public class Home extends AppCompatActivity {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 //something goes wrong uploading the post
-                                ToastShort ToastS = new ToastShort(e.getMessage(),getApplicationContext());
+                                ToastShort ToastS = new ToastShort( e.getMessage(), getApplicationContext() );
                                 ToastS.showMessage();
                                 popupClickProgress.setVisibility( View.GONE );
                                 popupAddButton.setVisibility( View.VISIBLE );
@@ -297,7 +258,7 @@ public class Home extends AppCompatActivity {
         myRef.setValue( post ).addOnSuccessListener( new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                ToastShort ToastS = new ToastShort("Post added correctly!",getApplicationContext());
+                ToastShort ToastS = new ToastShort( "Post added correctly!", getApplicationContext() );
                 ToastS.showMessage();
                 popupTitle.setText( "" );
                 popupPlace.setText( "" );
@@ -321,13 +282,14 @@ public class Home extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         //Logout of the user
-        if (menuItem.getItemId() == R.id.action_settings) {
+        if (menuItem.getItemId() == R.id.logout_settings) {
             FirebaseAuth.getInstance().signOut();
             Intent loginActivity = new Intent( getApplicationContext(), LoginActivity.class );
             startActivity( loginActivity );
             finish();
             return true;
         }
+        //Deletion of the user
         if (menuItem.getItemId() == R.id.delete_settings) {
             Intent deleteActivity = new Intent( getApplicationContext(), DeleteActivity.class );
             startActivity( deleteActivity );
@@ -349,7 +311,6 @@ public class Home extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    //DONE BY ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public void updateNavHeader() {
         //we are retrieving the navigation view
         NavigationView navigationView = findViewById( R.id.nav_view );
@@ -375,41 +336,13 @@ public class Home extends AppCompatActivity {
         public void handleMessage(@NonNull Message msg) {
             String address;
             //check if the code is 1 . this means the address in the message is processed correctly ****
-            if(msg.what == 1){
+            if (msg.what == 1) {
                 Bundle bundle = msg.getData();
                 address = bundle.getString( "Address" );
-            }else{
+            } else {
                 address = null;
             }
-           latitudeLongitude = address;
+            latitudeLongitude = address;
         }
     }
-
-    /*
-    //TODO remember when uncomment ro let the class implement the following
-    implements NavigationView.OnNavigationItemSelectedListener
-    @SuppressWarnings( "StatementWHitEmptyBody" )
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if(id == R.id.nav_home){
-            getSupportActionBar().setTitle( "Home" );
-            getSupportFragmentManager().beginTransaction().replace( R.id.nav_host_fragment_content_home, new HomeFragment() ).commit();
-        }else if ( id == R.id.nav_profile){
-            getSupportActionBar().setTitle( "Profile" );
-            getSupportFragmentManager().beginTransaction().replace( R.id.nav_host_fragment_content_home, new ProfileFragment() ).commit();
-        }else if(id == R.id.nav_settings){
-            getSupportActionBar().setTitle( "Settings" );
-            getSupportFragmentManager().beginTransaction().replace( R.id.nav_host_fragment_content_home, new SettingsFragment() ).commit();
-        }else  if(id == R.id.nav_logout){
-            FirebaseAuth.getInstance().signOut();
-            Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity( loginActivity );
-            finish();
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById( R.id.drawer_layout );
-        drawer.closeDrawer( GravityCompat.START );
-        return true;
-    }*/
 }
