@@ -3,16 +3,11 @@ package com.example.pictureblog.Activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -21,10 +16,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.pictureblog.Helpers.ToastShort;
 import com.example.pictureblog.R;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -39,7 +34,6 @@ import com.google.firebase.storage.UploadTask;
 public class RegisterActivity extends AppCompatActivity {
 
     ImageView imgUserPhoto;
-    static int PreqCode = 1; //Permission request code
     static int REQUESCODE = 1;
     Uri pickedImgUri;
 
@@ -138,11 +132,11 @@ public class RegisterActivity extends AppCompatActivity {
         imgUserPhoto.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= 22) {
-                    checkAndRequestForPermission();
-                } else {
-                    openGallery();
-                }
+                ImagePicker.Companion.with( RegisterActivity.this )
+                        /*.crop()	    			//Crop image(Optional), Check Customization for more option
+                        .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                        .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)*/
+                        .start();
             }
         } );
 
@@ -230,37 +224,13 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    private void openGallery() {
-        //TODO: openGallery intent and wait for user to pick a photo
-        Intent galleryIntent = new Intent( Intent.ACTION_GET_CONTENT );
-        galleryIntent.setType( "image/*" );
-        startActivityForResult( galleryIntent, REQUESCODE ); //TODO deprecated method find an alternative!!
-
-    }
-
-    private void checkAndRequestForPermission() {
-        //If the permission are not allowed!!
-        if (ContextCompat.checkSelfPermission( RegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE ) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale( RegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE )) {
-                Toast.makeText( RegisterActivity.this, "Please accept for required permission", Toast.LENGTH_LONG ).show();
-            } else {
-                ActivityCompat.requestPermissions( RegisterActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PreqCode );
-            }
-        } else {
-            openGallery();
-        }
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
 
-        if (resultCode == RESULT_OK && requestCode == REQUESCODE && data != null) {
-            //the user has successfully picked the image
-            // we need to save its reference to a URI variable
-            pickedImgUri = data.getData();
-            imgUserPhoto.setImageURI( pickedImgUri );
-        }
+        //the user has successfully picked the image
+        // we need to save its reference to a URI variable
+        pickedImgUri = data.getData();
+        imgUserPhoto.setImageURI( pickedImgUri );
     }
 }

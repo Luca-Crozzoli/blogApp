@@ -85,7 +85,7 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
                     String imgUrl = mData.get( position ).getPicture();
                     deletePost(postKey,imgUrl);
 
-                    Toast.makeText( mContext.getApplicationContext(), "delete clicked", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( mContext.getApplicationContext(), "deletion in progress", Toast.LENGTH_SHORT ).show();
 
                 }
             } );
@@ -107,7 +107,7 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
-                            Toast.makeText( mContext, "Cancellation of post done", Toast.LENGTH_SHORT ).show();
+                            //Toast.makeText( mContext, "Post cancellation done", Toast.LENGTH_SHORT ).show();
                         }else{
                             Toast.makeText( mContext, "Fail to delete", Toast.LENGTH_SHORT ).show();
                         }
@@ -120,7 +120,7 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
-                            Toast.makeText( mContext, "Cancellation of related comments done", Toast.LENGTH_SHORT ).show();
+                            Toast.makeText( mContext, "Post cancellation done", Toast.LENGTH_SHORT ).show();
                         }else{
                             Toast.makeText( mContext, "Fail to delete", Toast.LENGTH_SHORT ).show();
                         }

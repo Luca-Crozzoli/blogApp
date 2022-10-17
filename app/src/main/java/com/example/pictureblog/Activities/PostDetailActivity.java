@@ -65,12 +65,9 @@ public class PostDetailActivity extends AppCompatActivity {
     MapView post_map;
     EditText editTextComment;
     String PostKey;
-
     Button btnAddComment;
-
     FirebaseAuth firebaseAuth;
     FirebaseUser currentUser;
-
     FirebaseDatabase firebaseDatabase;
 
     //new recycler view for holding the comments
@@ -163,9 +160,6 @@ public class PostDetailActivity extends AppCompatActivity {
 
 
         //binding the data into the views
-        // first get the post data  and then display it
-        //send post detail data to this activity first...
-        //get post data
 
         String postImage = getIntent().getExtras().getString( "postImage" ); //LOOK at the put extra in post adapter used to pass the parameter names
         Glide.with( this ).load( postImage ).into( imgPost );
@@ -190,13 +184,15 @@ public class PostDetailActivity extends AppCompatActivity {
         String date = timeStampToString( getIntent().getExtras().getLong( "postDate" ) );
         txtPostDateName.setText( date );
 
+        String postPlace = getIntent().getExtras().getString( "postPlace" );
+        String postPlaceCap = postPlace.substring(0, 1).toUpperCase() + postPlace.substring(1);
+
         String postLocation = getIntent().getExtras().getString( "postLocation" );
         String[] coordinates = postLocation.split( "\n" );
         // https://stackoverflow.com/questions/11873573/converting-a-string-to-an-int-for-an-android-geopoint
         Double latitude = Double.parseDouble( coordinates[0] );
         Double longitude = Double.parseDouble( coordinates[1] );
 
-        //TODO ADD THE LATITUDE AND LONGITUDE RETRIEVE IT FROM THE DATABASE FIELD
         IMapController mapController = post_map.getController();
         mapController.setZoom( 9.5 );
         GeoPoint startPoint = new GeoPoint( latitude, longitude );
@@ -209,6 +205,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
 
         Drawable myTooltip = getDrawable( R.drawable.marker_map );
+        markerLocation.setTitle(postPlaceCap);
         markerLocation.setIcon( myTooltip );
         markerLocation.setAnchor( Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM );
         post_map.getOverlays().add( markerLocation );

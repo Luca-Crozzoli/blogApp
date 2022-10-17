@@ -223,7 +223,7 @@ public class Home extends AppCompatActivity {
                                 // create post Object here after upload the image in firebase storage successfully
 
 
-                                Post post = new Post( postTitle, postDescription, imageDownloadLink, currentUser.getUid(), currentUser.getPhotoUrl().toString(), latitudeLongitude );
+                                Post post = new Post( postTitle, postDescription, imageDownloadLink, currentUser.getUid(), currentUser.getPhotoUrl().toString(), latitudeLongitude,postPlace );
                                 //add the post to the database
                                 addPost( post );
 
