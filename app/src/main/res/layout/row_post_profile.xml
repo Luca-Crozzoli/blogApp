@@ -47,7 +47,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/light_cyan"
+        android:background="@drawable/btn_style"
         android:text="Delete"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
