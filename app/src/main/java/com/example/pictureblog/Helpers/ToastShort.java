@@ -16,7 +16,6 @@ public class ToastShort {
         this.context = context;
     }
 
-
     public void showMessage() {
         Toast.makeText( context, message, Toast.LENGTH_LONG ).show();
     }

@@ -33,15 +33,12 @@ import com.google.firebase.storage.UploadTask;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    ImageView imgUserPhoto;
-    static int REQUESCODE = 1;
-    Uri pickedImgUri;
-
+    private ImageView imgUserPhoto;
+    private Uri pickedImgUri;
     private EditText userName, userEmail, userPassword, userPassword2;
     private ProgressBar progressBar;
     private Button regButton;
     private TextView regLoginText;
-
     private FirebaseAuth mAuth;
 
     @Override
@@ -150,6 +147,24 @@ public class RegisterActivity extends AppCompatActivity {
         } );
     }
 
+    @Override
+    public void onBackPressed() {
+
+        Intent loginActivity = new Intent( getApplicationContext(), LoginActivity.class );
+        startActivity( loginActivity );
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult( requestCode, resultCode, data );
+
+        //the user has successfully picked the image
+        // we need to save its reference to a URI variable
+        pickedImgUri = data.getData();
+        imgUserPhoto.setImageURI( pickedImgUri );
+    }
+
     private void CreateUserAccount(String name, String mail, String password) {
         mAuth.createUserWithEmailAndPassword( mail, password )
                 .addOnCompleteListener( this, new OnCompleteListener<AuthResult>() {
@@ -216,21 +231,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-
     private void updateUI() {
-        Intent homeActivity = new Intent( getApplicationContext(), LoginActivity.class ); //TODO in the video tutorial Home.class
+        Intent homeActivity = new Intent( getApplicationContext(), Home.class );
         startActivity( homeActivity );
         finish();
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult( requestCode, resultCode, data );
-
-        //the user has successfully picked the image
-        // we need to save its reference to a URI variable
-        pickedImgUri = data.getData();
-        imgUserPhoto.setImageURI( pickedImgUri );
     }
 }

@@ -52,15 +52,15 @@ public class Home extends AppCompatActivity {
     private ActivityHome2Binding binding;
 
     //Add the instances for firebase DONE BY ME!!!!!!!!!!!!!!!!!!!!!!!
-    FirebaseAuth mAuth;
-    FirebaseUser currentUser;
-    Dialog popAddPost; //creating a new dialog variable to consent the upload of the image
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private Dialog popAddPost; //creating a new dialog variable to consent the upload of the image
 
     //popup widgets references on popup_add_post.xml
-    ImageView popupUserImage, popupPostImage, popupAddButton;
-    TextView popupTitle, popupPlace, popupDescription;
-    ProgressBar popupClickProgress;
-    String latitudeLongitude;
+    private ImageView popupUserImage, popupPostImage, popupAddButton;
+    private TextView popupTitle, popupPlace, popupDescription;
+    private ProgressBar popupClickProgress;
+    private String latitudeLongitude;
     private Uri pickedImgUri = null;
 
 
@@ -119,7 +119,6 @@ public class Home extends AppCompatActivity {
             }
         } );
     }
-
 
     //When user picked an image...
     @Override
@@ -271,7 +270,6 @@ public class Home extends AppCompatActivity {
         } );
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -302,7 +300,6 @@ public class Home extends AppCompatActivity {
         }
         return super.onOptionsItemSelected( menuItem );
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {

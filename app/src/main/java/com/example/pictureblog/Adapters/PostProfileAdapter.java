@@ -27,11 +27,11 @@ import java.util.List;
 
 public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.MyViewHolder> {
 
-    DatabaseReference databaseReference;
-    FirebaseStorage firebaseStorage;
+    private DatabaseReference databaseReference;
+    private FirebaseStorage firebaseStorage;
 
-    Context mContext;
-    List<Post> mData;
+    private Context mContext;
+    private List<Post> mData;
 
 
     public PostProfileAdapter(Context mContext, List<Post> mData) {
@@ -92,7 +92,6 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
 
         }
     }
-
 
     public void deletePost(String postKey, String imgUrl) {
 

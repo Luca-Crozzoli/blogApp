@@ -124,6 +124,17 @@ public class LoginActivity extends AppCompatActivity {
         } );
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            //user is already connected , need to redirect him to home page
+            updateUI();
+        }
+    }
+
     private void signIn(String mail, String password) {
         mAuth.signInWithEmailAndPassword( mail, password ).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
             @Override
@@ -152,15 +163,5 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    //We do the override to let the user logged in if it is already logged in
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser user = mAuth.getCurrentUser();
 
-        if (user != null) {
-            //user is already connected , need to redirect him to home page
-            updateUI();
-        }
-    }
 }

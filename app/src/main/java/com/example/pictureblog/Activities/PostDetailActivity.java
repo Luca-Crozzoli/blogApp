@@ -60,21 +60,21 @@ import java.util.Locale;
 
 public class PostDetailActivity extends AppCompatActivity {
 
-    ImageView imgPost, imgUserPost, imgCurrentUser;
-    TextView txtPostDesc, txtPostDateName, txtPostTitle;
-    MapView post_map;
-    EditText editTextComment;
-    String PostKey;
-    Button btnAddComment;
-    FirebaseAuth firebaseAuth;
-    FirebaseUser currentUser;
-    FirebaseDatabase firebaseDatabase;
+    private ImageView imgPost, imgUserPost, imgCurrentUser;
+    private TextView txtPostDesc, txtPostDateName, txtPostTitle;
+    private MapView post_map;
+    private EditText editTextComment;
+    private String PostKey;
+    private Button btnAddComment;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser currentUser;
+    private FirebaseDatabase firebaseDatabase;
 
     //new recycler view for holding the comments
-    RecyclerView rVComment;
+    private RecyclerView rVComment;
     // used to adapt the content of the comments
-    CommentAdapter commentAdapter;
-    List<Comment> listComment;
+    private CommentAdapter commentAdapter;
+    private List<Comment> listComment;
     static String COMMENT_KEY = "comment";
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
@@ -217,7 +217,6 @@ public class PostDetailActivity extends AppCompatActivity {
 
     }
 
-
     //retrieve all the comments associated to the post and display it using the comment adapter
     private void iniRvComment() {
 
@@ -245,7 +244,6 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         } );
     }
-
 
     private String timeStampToString(long time) {
         Calendar calendar = Calendar.getInstance( Locale.ITALIAN );

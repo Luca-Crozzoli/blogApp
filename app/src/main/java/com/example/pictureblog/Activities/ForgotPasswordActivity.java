@@ -23,8 +23,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private EditText emailEditText;
     private Button resetPasswordButton;
     private ProgressBar progressBar;
+    private FirebaseAuth auth;
 
-    FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -43,6 +43,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 resetPassword();
             }
         } );
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent loginActivity = new Intent( getApplicationContext(), LoginActivity.class );
+        startActivity( loginActivity );
+        finish();
     }
 
     private void resetPassword(){

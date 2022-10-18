@@ -32,15 +32,13 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 public class DeleteActivity extends AppCompatActivity {
-    FirebaseUser currentUser;
-    FirebaseStorage firebaseStorage;
-    DatabaseReference databaseReference;
-    String currentUserId ;
-
+    private FirebaseUser currentUser;
+    private FirebaseStorage firebaseStorage;
+    private DatabaseReference databaseReference;
+    private String currentUserId ;
     //popup widgets references on popup_add_post.xml
-    Button deleteButton;
-
-    EditText confirmPassword;
+    private Button deleteButton;
+    private EditText confirmPassword;
 
 
     @Override
@@ -80,6 +78,14 @@ public class DeleteActivity extends AppCompatActivity {
             }
         } );
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent homeActivity = new Intent( getApplicationContext(), Home.class );
+        startActivity( homeActivity );
+        finish();
     }
 
     private void deleteUserAndPosts(String currentUserId) {

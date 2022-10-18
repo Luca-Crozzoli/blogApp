@@ -67,6 +67,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             tv_date = itemView.findViewById( R.id.comment_date );
         }
     }
+
     private String timeStampToString(long time) {
         Calendar calendar = Calendar.getInstance( Locale.ITALIAN );
         calendar.setTimeInMillis( time );
