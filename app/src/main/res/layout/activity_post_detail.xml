@@ -83,7 +83,6 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:lineSpacingExtra="8dp"
-            android:text="Lorem ipsum eocoe va sta andando tutto benissmi cquanrnt noasnn nininn ainidnind in"
             android:textColor="#373737"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
