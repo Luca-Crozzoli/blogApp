@@ -45,7 +45,6 @@ public class ProfileFragment extends Fragment {
     FirebaseUser currentUser;
     String userId;
 
-    @SuppressLint("MissingInflatedId")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
