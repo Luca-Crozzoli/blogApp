@@ -35,7 +35,7 @@ public class DeleteActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private FirebaseStorage firebaseStorage;
     private DatabaseReference databaseReference;
-    private String currentUserId ;
+    private String currentUserId;
     //popup widgets references on popup_add_post.xml
     private Button deleteButton;
     private EditText confirmPassword;
@@ -108,17 +108,17 @@ public class DeleteActivity extends AppCompatActivity {
                     String postKey = postList.get( i ).getPostKey();
                     String imgUrl = postList.get( i ).getPicture();
 
-                    deletePost( postKey, imgUrl);
+                    deletePost( postKey, imgUrl );
                 }
 
                 String userProfileImage = currentUser.getPhotoUrl().toString();
-                deleteUserProfileImage(userProfileImage);
+                deleteUserProfileImage( userProfileImage );
                 currentUser.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText( getApplicationContext(), "Deletion of profile", Toast.LENGTH_SHORT ).show();
-                            Intent intent = new Intent(DeleteActivity.this, LoginActivity.class);
+                            Intent intent = new Intent( DeleteActivity.this, LoginActivity.class );
                             startActivity( intent );
                             finish();
 
@@ -137,9 +137,9 @@ public class DeleteActivity extends AppCompatActivity {
     }
 
     private void deleteUserProfileImage(String userProfileImage) {
-        if (userProfileImage.contains( "userphoto" )){
+        if (userProfileImage.contains( "userphoto" )) {
             return;
-        }else {
+        } else {
             firebaseStorage = FirebaseStorage.getInstance();
             StorageReference imgReference = firebaseStorage.getReferenceFromUrl( userProfileImage );
             imgReference.delete().addOnSuccessListener( new OnSuccessListener<Void>() {
