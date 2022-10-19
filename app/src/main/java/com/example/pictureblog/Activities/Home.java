@@ -1,9 +1,15 @@
 package com.example.pictureblog.Activities;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +22,7 @@ import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
@@ -24,12 +31,17 @@ import com.example.pictureblog.Helpers.ToastShort;
 import com.example.pictureblog.Models.Post;
 import com.example.pictureblog.R;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -46,7 +58,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class Home extends AppCompatActivity {
+
+
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityHome2Binding binding;
@@ -57,19 +75,22 @@ public class Home extends AppCompatActivity {
     private Dialog popAddPost; //creating a new dialog variable to consent the upload of the image
 
     //popup widgets references on popup_add_post.xml
-    private ImageView popupUserImage, popupPostImage, popupAddButton;
+    private ImageView popupUserImage, popupPostImage, popupMapIcon,popupAddButton;
     private TextView popupTitle, popupPlace, popupDescription;
     private ProgressBar popupClickProgress;
     private String latitudeLongitude;
     private Uri pickedImgUri = null;
+    FusedLocationProviderClient fusedLocationProviderClient;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+
         //DONE BY ME initialize firebase instances
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient( Home.this );
 
         //DONE BY ME initialize popup
         iniPopup();
@@ -131,6 +152,11 @@ public class Home extends AppCompatActivity {
 
     //method to initialize the pop up menu used to upload a post
     private void iniPopup() {
+        //check the permission for the localization when we want to update a post
+        /*if (ActivityCompat.checkSelfPermission( Home.this, Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED){
+        }else {
+            ActivityCompat.requestPermissions( Home.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44 );
+        }*/
 
         popAddPost = new Dialog( this );
         popAddPost.setContentView( R.layout.popup_add_post ); //Update our layout
@@ -140,6 +166,18 @@ public class Home extends AppCompatActivity {
 
         //initialize popup widgets
         popupUserImage = popAddPost.findViewById( R.id.popup_user_image );
+        popupMapIcon = popAddPost.findViewById( R.id.map_icon_get_current_location );
+        popupMapIcon.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission( Home.this, Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED){
+                    showLocation();
+                }else {
+                    ActivityCompat.requestPermissions( Home.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44 );
+                    //Toast.makeText( Home.this, "Permissions added, click again to provide location", Toast.LENGTH_SHORT ).show();
+                }
+            }
+        } );
         popupPostImage = popAddPost.findViewById( R.id.popup_img );
 
         popupTitle = popAddPost.findViewById( R.id.popup_title );
@@ -242,6 +280,29 @@ public class Home extends AppCompatActivity {
             }
         } );
 
+
+    }
+
+    @SuppressLint("MissingPermission")
+    private void showLocation() {
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener( new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                Location location = task.getResult();
+                if(location != null){
+                    Geocoder geocoder = new Geocoder( Home.this, Locale.getDefault() );
+                    try {
+                        List<Address> AddressList = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1  );
+                        popupPlace.setText(AddressList.get( 0 ).getAddressLine( 0 ) );
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }else {
+                    Toast.makeText( Home.this, "Tap again the map icon", Toast.LENGTH_SHORT ).show();
+                }
+
+            }
+        } );
 
     }
 
