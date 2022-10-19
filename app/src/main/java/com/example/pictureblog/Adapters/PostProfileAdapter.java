@@ -84,9 +84,6 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
                     String postKey = mData.get( position).getPostKey();
                     String imgUrl = mData.get( position ).getPicture();
                     deletePost(postKey,imgUrl);
-
-                    Toast.makeText( mContext.getApplicationContext(), "deletion in progress", Toast.LENGTH_SHORT ).show();
-
                 }
             } );
 
