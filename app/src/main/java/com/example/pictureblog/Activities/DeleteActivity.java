@@ -137,14 +137,18 @@ public class DeleteActivity extends AppCompatActivity {
     }
 
     private void deleteUserProfileImage(String userProfileImage) {
-        firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference imgReference = firebaseStorage.getReferenceFromUrl(userProfileImage  );
-        imgReference.delete().addOnSuccessListener( new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText( DeleteActivity.this, "Removed user image correctly", Toast.LENGTH_SHORT ).show();
-            }
-        } );
+        if (userProfileImage.contains( "userphoto" )){
+            return;
+        }else {
+            firebaseStorage = FirebaseStorage.getInstance();
+            StorageReference imgReference = firebaseStorage.getReferenceFromUrl( userProfileImage );
+            imgReference.delete().addOnSuccessListener( new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    Toast.makeText( DeleteActivity.this, "Removed user image correctly", Toast.LENGTH_SHORT ).show();
+                }
+            } );
+        }
 
     }
 
