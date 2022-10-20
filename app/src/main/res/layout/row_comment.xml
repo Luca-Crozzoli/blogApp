@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="#f4f4f4">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/comment_user_img"
         android:layout_width="42dp"
         android:layout_height="42dp"
@@ -14,7 +14,8 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        app:shapeAppearanceOverlay="@style/Circular"/>
 
     <TextView
         android:textStyle="bold"

@@ -40,7 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/row_post_profile_img"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -50,5 +50,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="@+id/imageView2"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        app:shapeAppearanceOverlay="@style/Circular"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,7 +13,7 @@
         tools:context=".Activities.RegisterActivity">
 
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/regUserPhoto"
             android:layout_width="90dp"
             android:layout_height="90dp"
@@ -27,7 +27,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.787"
-            app:srcCompat="@drawable/userphoto" />
+            app:srcCompat="@drawable/userphoto"
+            app:shapeAppearanceOverlay="@style/Circular"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"

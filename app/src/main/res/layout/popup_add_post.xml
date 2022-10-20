@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/popup_user_image"
         android:layout_width="48dp"
         android:layout_height="0dp"
@@ -15,7 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/popup_title"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/userphoto"></ImageView>
+        app:srcCompat="@drawable/userphoto"
+        app:shapeAppearanceOverlay="@style/Circular"></com.google.android.material.imageview.ShapeableImageView>
 
     <ImageView
         android:id="@+id/map_icon_get_current_location"
