@@ -80,6 +80,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                     postDetailActivity.putExtra( "userPhoto", mData.get( position ).getUserPhoto() );
                     postDetailActivity.putExtra( "postLocation", mData.get( position ).getPostLocation() );
                     postDetailActivity.putExtra( "postPlace",mData.get( position ).getPostPlace() );
+                    postDetailActivity.putExtra( "userName", mData.get( position ).getUserName() );
 
 
                     //here we provide the time stamp

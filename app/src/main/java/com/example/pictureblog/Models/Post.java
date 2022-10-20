@@ -4,10 +4,10 @@ import com.google.firebase.database.ServerValue;
 
 public class Post {
 
-    private String title, description, picture, userId, userPhoto, postKey, postLocation, postPlace;
+    private String title, description, picture, userId, userPhoto, postKey, postLocation, postPlace,userName;
     private Object timeStamp;
 
-    public Post(String title, String description, String picture, String userId, String userPhoto, String postLocation, String postPlace) {
+    public Post(String title, String description, String picture, String userId, String userPhoto, String postLocation, String postPlace, String userName) {
         this.title = title;
         this.description = description;
         this.picture = picture;
@@ -16,9 +16,14 @@ public class Post {
         this.postLocation = postLocation;
         this.postPlace = postPlace;
         this.timeStamp = ServerValue.TIMESTAMP; //the value of the time stamp is given from the firebase database server
+        this.userName = userName;
     }
 
     public Post() {
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public String getPostPlace() {
@@ -55,6 +60,10 @@ public class Post {
 
     public Object getTimeStamp() {
         return timeStamp;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public void setPostPlace(String postPlace) {

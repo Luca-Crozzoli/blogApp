@@ -181,8 +181,10 @@ public class PostDetailActivity extends AppCompatActivity {
         PostKey = getIntent().getExtras().getString( "postKey" );
 
         //retrieve the date of the post
+        String name = getIntent().getExtras().getString( "userName" );
         String date = timeStampToString( getIntent().getExtras().getLong( "postDate" ) );
-        txtPostDateName.setText( date );
+        String dateName =date.concat( ":   " ).concat( name );
+        txtPostDateName.setText( dateName );
 
         String postPlace = getIntent().getExtras().getString( "postPlace" );
         String postPlaceCap = postPlace.substring(0, 1).toUpperCase() + postPlace.substring(1);
