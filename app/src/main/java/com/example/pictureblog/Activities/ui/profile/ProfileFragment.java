@@ -75,9 +75,6 @@ public class ProfileFragment extends Fragment {
                     }
                 }
 
-                if (postList.isEmpty()) {
-                    Toast.makeText( getContext(), "NO POSTS UPDATED", Toast.LENGTH_SHORT ).show();
-                }
                 postProfileAdapter = new PostProfileAdapter( getActivity(), postList );
                 postRecyclerView.setAdapter( postProfileAdapter );
             }
