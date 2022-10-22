@@ -27,8 +27,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.787"
-            app:srcCompat="@drawable/userphoto"
-            app:shapeAppearanceOverlay="@style/Circular"/>
+            app:shapeAppearanceOverlay="@style/Circular"
+            app:srcCompat="@drawable/userphoto" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
@@ -46,7 +46,7 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/edittext_style"
             android:ems="10"
-            android:hint="Name"
+            android:hint="@string/name_hint"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/regMail"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +61,7 @@
             android:layout_marginBottom="4dp"
             android:background="@drawable/edittext_style"
             android:ems="10"
-            android:hint="Mail"
+            android:hint="@string/prompt_mail"
             android:inputType="textEmailAddress"
 
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
@@ -77,7 +77,7 @@
             android:layout_marginEnd="8dp"
             android:background="@drawable/edittext_style"
             android:ems="10"
-            android:hint="Password"
+            android:hint="@string/prompt_password"
             android:inputType="textPassword"
 
             app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +93,7 @@
             android:layout_marginEnd="8dp"
             android:background="@drawable/edittext_style"
             android:ems="10"
-            android:hint="Confirm Password"
+            android:hint="@string/confirm_password_hint"
             android:inputType="textPassword"
 
             app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +108,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="32dp"
             android:background="@drawable/btn_style"
-            android:text="Register"
+            android:text="@string/register_button"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -136,7 +136,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="Already Have an account? Log in"
+            android:text="@string/login_edit_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"

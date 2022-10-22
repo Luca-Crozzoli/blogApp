@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="top"
         tools:context=".Activities.PostDetailActivity">
 
@@ -17,6 +17,7 @@
             android:id="@+id/post_detail_img"
             android:layout_width="0dp"
             android:layout_height="250dp"
+            android:contentDescription="@string/post_image"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -36,7 +37,6 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:lineSpacingExtra="4dp"
-            android:text="TextView"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -98,8 +98,8 @@
             android:ems="10"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:hint="@string/add_comment_hint"
             android:imeOptions="actionDone"
-            android:hint="Write comment"
             android:inputType="textMultiLine"
             android:maxLines="3"
             app:layout_constraintBottom_toBottomOf="@+id/post_detail_currentuser_img"
@@ -133,8 +133,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/post_detail_desc"
             app:layout_constraintVertical_bias="0.008"
-            tools:srcCompat="@tools:sample/avatars"
-            app:shapeAppearanceOverlay="@style/Circular"/>
+            app:shapeAppearanceOverlay="@style/Circular"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <Button
             android:id="@+id/post_detail_add_comment_btn"
@@ -142,9 +142,9 @@
             android:layout_height="49dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/btn_style"
-            android:text="ADD"
+            android:text="@string/add_button"
             android:textColor="@color/white"
-            android:textSize="11sp"
+            android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="@+id/post_detail_comment"
             app:layout_constraintEnd_toEndOf="parent"
 
@@ -159,8 +159,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/post_detail_date_name"
             app:layout_constraintStart_toEndOf="@+id/post_detail_date_name"
             app:layout_constraintTop_toTopOf="@+id/post_detail_date_name"
-            tools:srcCompat="@tools:sample/avatars"
-            app:shapeAppearanceOverlay="@style/Circular"/>
+            app:shapeAppearanceOverlay="@style/Circular"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <org.osmdroid.views.MapView
             android:id="@+id/post_detail_map"

@@ -14,18 +14,17 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars"
-        app:shapeAppearanceOverlay="@style/Circular"/>
+        app:shapeAppearanceOverlay="@style/Circular"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:textStyle="bold"
-        android:textColor="#969595"
         android:id="@+id/comment_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:textColor="#969595"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/comment_user_img"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,7 +35,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="text comment"
         android:textColor="#969595"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +48,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="data"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
