@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loginProgress.setVisibility( View.VISIBLE );
-                btnLogin.setVisibility( View.INVISIBLE );
+                btnLogin.setVisibility( View.GONE );
 
                 final String mail = userMail.getText().toString().trim();
                 final String password = userPassword.getText().toString().trim();

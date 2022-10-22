@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,7 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
         TextView tvTitle;
         ImageView imgPost;
         Button deleteButton;
+        ProgressBar progressBar;
 
         public MyViewHolder(@NonNull View itemView) {
             super( itemView );
@@ -74,12 +76,16 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
             tvTitle = itemView.findViewById( R.id.row_post_title_profile );
             imgPost = itemView.findViewById( R.id.row_post_img_profile );
             deleteButton = itemView.findViewById( R.id.row_post_delete_button );
+            progressBar = itemView.findViewById( R.id.delete_progress );
+
 
 
 
             deleteButton.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    progressBar.setVisibility( View.VISIBLE );
+                    deleteButton.setVisibility( View.GONE );
                     int position = getAdapterPosition();
                     String postKey = mData.get( position).getPostKey();
                     String imgUrl = mData.get( position ).getPicture();
