@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         //Get the firebase instance
         mAuth = FirebaseAuth.getInstance();
         //initialize the Intent to move user at home after the login
-        homeActivity = new Intent( this, Home.class );
+        homeActivity = new Intent( this, HomeActivity.class );
 
         loginPhoto = findViewById( R.id.login_photo );
 

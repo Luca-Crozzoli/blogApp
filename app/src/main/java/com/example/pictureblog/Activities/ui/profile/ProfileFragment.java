@@ -2,22 +2,18 @@ package com.example.pictureblog.Activities.ui.profile;
 
 import static com.example.pictureblog.R.id.postRV_profile;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pictureblog.Activities.Home;
-import com.example.pictureblog.Adapters.PostAdapter;
 import com.example.pictureblog.Adapters.PostProfileAdapter;
 import com.example.pictureblog.Models.Post;
 import com.example.pictureblog.R;
@@ -88,27 +84,10 @@ public class ProfileFragment extends Fragment {
         } );
     }
 
-    //CAN BE REMOVED?
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach( context );
-    }
-
-    //CAN BE REMOVED?
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
 
-    //CAN BE REMOVED?
-    public interface OnFragmentInteractionListener {
-        //TODO update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

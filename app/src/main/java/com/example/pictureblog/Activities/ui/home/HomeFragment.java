@@ -70,28 +70,11 @@ public class HomeFragment extends Fragment {
             }
         } );
     }
-
-    //CAN BE REMOVED?
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach( context );
-    }
-
-    //CAN BE REMOVED?
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
+    
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
 
-    //CAN BE REMOVED?
-    public interface OnFragmentInteractionListener {
-        //TODO update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

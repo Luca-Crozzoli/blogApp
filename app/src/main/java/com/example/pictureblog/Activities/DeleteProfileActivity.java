@@ -3,13 +3,11 @@ package com.example.pictureblog.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.pictureblog.Models.Post;
@@ -31,7 +29,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class DeleteActivity extends AppCompatActivity {
+public class DeleteProfileActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private FirebaseStorage firebaseStorage;
     private DatabaseReference databaseReference;
@@ -83,7 +81,7 @@ public class DeleteActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        Intent homeActivity = new Intent( getApplicationContext(), Home.class );
+        Intent homeActivity = new Intent( getApplicationContext(), HomeActivity.class );
         startActivity( homeActivity );
         finish();
     }
@@ -118,7 +116,7 @@ public class DeleteActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText( getApplicationContext(), "Deletion of profile", Toast.LENGTH_SHORT ).show();
-                            Intent intent = new Intent( DeleteActivity.this, LoginActivity.class );
+                            Intent intent = new Intent( DeleteProfileActivity.this, LoginActivity.class );
                             startActivity( intent );
                             finish();
 
@@ -145,7 +143,7 @@ public class DeleteActivity extends AppCompatActivity {
             imgReference.delete().addOnSuccessListener( new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
-                    Toast.makeText( DeleteActivity.this, "Removed user image correctly", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( DeleteProfileActivity.this, "Removed user image correctly", Toast.LENGTH_SHORT ).show();
                 }
             } );
         }

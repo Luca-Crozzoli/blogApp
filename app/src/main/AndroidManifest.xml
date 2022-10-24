@@ -31,7 +31,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Activities.DeleteActivity"
+            android:name=".Activities.DeleteProfileActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -46,7 +46,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Activities.Home"
+            android:name=".Activities.HomeActivity"
             android:exported="true"
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.PictureBlog.NoActionBar">

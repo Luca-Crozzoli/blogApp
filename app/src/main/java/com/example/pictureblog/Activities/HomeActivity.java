@@ -61,7 +61,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class Home extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
 
 
@@ -89,7 +89,7 @@ public class Home extends AppCompatActivity {
         //DONE BY ME initialize firebase instances
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient( Home.this );
+        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient( HomeActivity.this );
 
         //DONE BY ME initialize popup
         iniPopup();
@@ -132,7 +132,7 @@ public class Home extends AppCompatActivity {
         popupPostImage.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImagePicker.Companion.with( Home.this )
+                ImagePicker.Companion.with( HomeActivity.this )
                         /*.crop()	    			//Crop image(Optional), Check Customization for more option
                         .compress(1024)			//Final image size will be less than 1 MB(Optional)
                         .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)*/
@@ -165,10 +165,10 @@ public class Home extends AppCompatActivity {
         popupMapIcon.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission( Home.this, Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.checkSelfPermission( HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED){
                     showLocation();
                 }else {
-                    ActivityCompat.requestPermissions( Home.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44 );
+                    ActivityCompat.requestPermissions( HomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44 );
                     //Toast.makeText( Home.this, "Permissions added, click again to provide location", Toast.LENGTH_SHORT ).show();
                 }
             }
@@ -189,7 +189,7 @@ public class Home extends AppCompatActivity {
         popupClickProgress = popAddPost.findViewById( R.id.popup_progressBar );
 
         //load current user logged in image using Glide
-        Glide.with( Home.this ).load( currentUser.getPhotoUrl() ).into( popupUserImage );
+        Glide.with( HomeActivity.this ).load( currentUser.getPhotoUrl() ).into( popupUserImage );
 
         // add post click listener on the button
         popupAddButton.setOnClickListener( new View.OnClickListener() {
@@ -285,7 +285,7 @@ public class Home extends AppCompatActivity {
             public void onComplete(@NonNull Task<Location> task) {
                 Location location = task.getResult();
                 if(location != null){
-                    Geocoder geocoder = new Geocoder( Home.this, Locale.getDefault() );
+                    Geocoder geocoder = new Geocoder( HomeActivity.this, Locale.getDefault() );
                     try {
                         List<Address> AddressList = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1  );
                         popupPlace.setText(AddressList.get( 0 ).getAddressLine( 0 ) );
@@ -293,7 +293,7 @@ public class Home extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }else {
-                    Toast.makeText( Home.this, "Tap again the map icon", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( HomeActivity.this, "Tap again the map icon", Toast.LENGTH_SHORT ).show();
                 }
 
             }
@@ -345,7 +345,7 @@ public class Home extends AppCompatActivity {
         }
         //Deletion of the user
         if (menuItem.getItemId() == R.id.delete_settings) {
-            Intent deleteActivity = new Intent( getApplicationContext(), DeleteActivity.class );
+            Intent deleteActivity = new Intent( getApplicationContext(), DeleteProfileActivity.class );
             startActivity( deleteActivity );
             finish();
             return true;
