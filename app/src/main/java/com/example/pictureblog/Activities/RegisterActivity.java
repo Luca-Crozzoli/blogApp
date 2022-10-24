@@ -205,12 +205,12 @@ public class RegisterActivity extends AppCompatActivity {
                 imageFilePath.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        //Uri contain user image url
+                        //Uri contain user image url, request for update the profile
                         UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                                 .setDisplayName( name )
                                 .setPhotoUri( uri )
                                 .build();
-
+                        //take the previous request to update the profile information
                         currentUser.updateProfile( profileUpdate )
                                 .addOnCompleteListener( new OnCompleteListener<Void>() {
                                     @Override

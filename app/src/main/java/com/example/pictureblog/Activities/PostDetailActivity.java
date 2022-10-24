@@ -84,7 +84,7 @@ public class PostDetailActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_post_detail );
 
-        //transparent status bar TODO is it necessary?
+        //transparent status bar
         Window w = getWindow();
         w.setFlags( WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS );
 

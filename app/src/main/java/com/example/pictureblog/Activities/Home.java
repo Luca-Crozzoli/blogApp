@@ -14,7 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.InputFilter;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +29,7 @@ import com.example.pictureblog.Helpers.GeoLocation;
 import com.example.pictureblog.Helpers.ToastShort;
 import com.example.pictureblog.Models.Post;
 import com.example.pictureblog.R;
+import com.example.pictureblog.databinding.ActivityHomeBinding;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -49,7 +49,6 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.pictureblog.databinding.ActivityHome2Binding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -67,7 +66,7 @@ public class Home extends AppCompatActivity {
 
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityHome2Binding binding;
+    private ActivityHomeBinding binding;
 
     //Add the instances for firebase DONE BY ME!!!!!!!!!!!!!!!!!!!!!!!
     private FirebaseAuth mAuth;
@@ -96,7 +95,7 @@ public class Home extends AppCompatActivity {
         iniPopup();
         setupPopupImageClick();
 
-        binding = ActivityHome2Binding.inflate( getLayoutInflater() );
+        binding = ActivityHomeBinding.inflate( getLayoutInflater() );
         setContentView( binding.getRoot() );
 
 
@@ -110,6 +109,7 @@ public class Home extends AppCompatActivity {
             }
         } );
 
+        //hamburger icon to allow the selection of the different
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -152,11 +152,6 @@ public class Home extends AppCompatActivity {
 
     //method to initialize the pop up menu used to upload a post
     private void iniPopup() {
-        //check the permission for the localization when we want to update a post
-        /*if (ActivityCompat.checkSelfPermission( Home.this, Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED){
-        }else {
-            ActivityCompat.requestPermissions( Home.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44 );
-        }*/
 
         popAddPost = new Dialog( this );
         popAddPost.setContentView( R.layout.popup_add_post ); //Update our layout
@@ -353,9 +348,6 @@ public class Home extends AppCompatActivity {
             Intent deleteActivity = new Intent( getApplicationContext(), DeleteActivity.class );
             startActivity( deleteActivity );
             finish();
-            /*Intent loginActivity = new Intent( getApplicationContext(), LoginActivity.class );
-            startActivity( loginActivity );
-            finish();*/
             return true;
 
         }
