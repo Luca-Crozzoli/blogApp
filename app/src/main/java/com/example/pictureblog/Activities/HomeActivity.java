@@ -180,12 +180,12 @@ public class HomeActivity extends AppCompatActivity {
         popupMapIcon.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupMapIcon.setVisibility( View.INVISIBLE );
-                popupMapProgress.setVisibility( View.VISIBLE );
 
                 if (ActivityCompat.checkSelfPermission( HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
-                    if (isGPSEnabled()) {
 
+                    if (isGPSEnabled()) {
+                        popupMapIcon.setVisibility( View.INVISIBLE );
+                        popupMapProgress.setVisibility( View.VISIBLE );
                         fusedLocationProviderClient.requestLocationUpdates( locationRequest, new LocationCallback() {
                                     @Override
                                     public void onLocationResult(LocationResult locationResult) {
