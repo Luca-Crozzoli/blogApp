@@ -52,8 +52,7 @@
         android:inputType="text"
         app:layout_constraintEnd_toStartOf="@+id/map_icon_get_current_location"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/popup_title"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/popup_title" />
 
     <EditText
         android:id="@+id/popup_description"
