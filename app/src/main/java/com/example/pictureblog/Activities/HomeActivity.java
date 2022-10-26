@@ -16,6 +16,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HardwarePropertiesManager;
 import android.os.Looper;
 import android.os.Message;
 import android.view.Gravity;
@@ -86,7 +87,7 @@ public class HomeActivity extends AppCompatActivity {
     //popup widgets references on popup_add_post.xml
     private ImageView popupUserImage, popupPostImage, popupMapIcon, popupAddButton;
     private TextView popupTitle, popupPlace, popupDescription;
-    private ProgressBar popupClickProgress;
+    private ProgressBar popupClickProgress, popupMapProgress;
     private String latitudeLongitude;
     private Uri pickedImgUri = null;
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -171,7 +172,6 @@ public class HomeActivity extends AppCompatActivity {
         popupUserImage = popAddPost.findViewById( R.id.popup_user_image );
         popupMapIcon = popAddPost.findViewById( R.id.map_icon_get_current_location );
 
-
         locationRequest = LocationRequest.create();
         locationRequest.setPriority( LocationRequest.PRIORITY_HIGH_ACCURACY );
         locationRequest.setInterval( 5000 );
@@ -180,24 +180,30 @@ public class HomeActivity extends AppCompatActivity {
         popupMapIcon.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                popupMapIcon.setVisibility( View.INVISIBLE );
+                popupMapProgress.setVisibility( View.VISIBLE );
 
-                if (isGPSEnabled() && ActivityCompat.checkSelfPermission( HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
-                    fusedLocationProviderClient.requestLocationUpdates( locationRequest, new LocationCallback() {
-                                @Override
-                                public void onLocationResult(LocationResult locationResult) {
-                                    super.onLocationResult( locationResult );
+                if (ActivityCompat.checkSelfPermission( HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
+                    if (isGPSEnabled()) {
 
-                                    fusedLocationProviderClient.removeLocationUpdates( this );
+                        fusedLocationProviderClient.requestLocationUpdates( locationRequest, new LocationCallback() {
+                                    @Override
+                                    public void onLocationResult(LocationResult locationResult) {
+                                        super.onLocationResult( locationResult );
 
-                                    if (locationResult != null && locationResult.getLocations().size() > 0) {
-                                        showLocationAddressET();
+                                        fusedLocationProviderClient.removeLocationUpdates( this );
+                                        popupMapIcon.setVisibility( View.VISIBLE );
+                                        popupMapProgress.setVisibility( View.GONE );
+                                        if (locationResult != null && locationResult.getLocations().size() > 0) {
+                                            showLocationAddressET();
+                                        }
                                     }
-                                }
-                            }, Looper.getMainLooper()
-                    );
-
+                                }, Looper.getMainLooper()
+                        );
+                    } else {
+                        turnOnGps();
+                    }
                 } else {
-                    turnOnGps();
                     ActivityCompat.requestPermissions( HomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44 );
                 }
 
@@ -210,6 +216,7 @@ public class HomeActivity extends AppCompatActivity {
         popupPlace = popAddPost.findViewById( R.id.et_place );
         popupAddButton = popAddPost.findViewById( R.id.popup_add );
         popupClickProgress = popAddPost.findViewById( R.id.popup_progressBar );
+        popupMapProgress = popAddPost.findViewById( R.id.map_progress );
 
         //load current user logged in image using Glide
         Glide.with( HomeActivity.this ).load( currentUser.getPhotoUrl() ).into( popupUserImage );
@@ -366,7 +373,7 @@ public class HomeActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    Toast.makeText( HomeActivity.this, "Location null", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( HomeActivity.this, "Location Null", Toast.LENGTH_SHORT ).show();
                     return;
                 }
 
