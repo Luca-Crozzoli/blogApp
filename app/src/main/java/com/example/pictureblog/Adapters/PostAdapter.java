@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.pictureblog.Activities.PostDetailActivity;
-import com.example.pictureblog.Models.Post;
+import com.example.pictureblog.Entities.Post;
 import com.example.pictureblog.R;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //When we create the view holder we are inflating the row_post_item_layout provided in layouts
-        View row = LayoutInflater.from( mContext ).inflate( R.layout.row_post_item, parent, false ); // the row_post_item.xml
+        View row = LayoutInflater.from( mContext ).inflate( R.layout.row_post_item, parent, false ); // row_post_item.xml
 
         return new MyViewHolder( row );
     }

@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.pictureblog.Models.Post;
+import com.example.pictureblog.Entities.Post;
 import com.example.pictureblog.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,7 +44,7 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //When we create the view holder we are inflating the row_post_item_layout provided in layouts
-        View row = LayoutInflater.from(mContext).inflate( R.layout.row_post_profile , parent,false); // the row_post_item.xml
+        View row = LayoutInflater.from( mContext ).inflate( R.layout.row_post_profile, parent, false ); // row_post_item.xml
 
         return new MyViewHolder( row );
     }
@@ -52,8 +52,8 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         //update the holder with the appropriate values: the title and the image of the post
-        holder.tvTitle.setText( mData.get(position).getTitle() );
-        Glide.with(mContext).load( mData.get( position ).getPicture() ).into(holder.imgPost);
+        holder.tvTitle.setText( mData.get( position ).getTitle() );
+        Glide.with( mContext ).load( mData.get( position ).getPicture() ).into( holder.imgPost );
 
     }
 
@@ -62,7 +62,7 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
         return mData.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvTitle;
         ImageView imgPost;
@@ -79,17 +79,15 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
             progressBar = itemView.findViewById( R.id.delete_progress );
 
 
-
-
             deleteButton.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     progressBar.setVisibility( View.VISIBLE );
                     deleteButton.setVisibility( View.GONE );
                     int position = getAdapterPosition();
-                    String postKey = mData.get( position).getPostKey();
+                    String postKey = mData.get( position ).getPostKey();
                     String imgUrl = mData.get( position ).getPicture();
-                    deletePost(postKey,imgUrl);
+                    deletePost( postKey, imgUrl );
                 }
             } );
 
@@ -104,26 +102,25 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
             @Override
             public void onSuccess(Void unused) {
                 //if removed successfully from the storage then we need to remove from the database
-                databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
+                databaseReference = FirebaseDatabase.getInstance().getReference( "Posts" );
                 databaseReference.child( postKey ).removeValue().addOnCompleteListener( new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            //Toast.makeText( mContext, "Post cancellation done", Toast.LENGTH_SHORT ).show();
-                        }else{
+                        if (task.isSuccessful()) {
+                        } else {
                             Toast.makeText( mContext, "Fail to delete", Toast.LENGTH_SHORT ).show();
                         }
                     }
                 } );
 
                 //also we need to remove the corresponding comments related to that image
-                databaseReference = FirebaseDatabase.getInstance().getReference("comment");
+                databaseReference = FirebaseDatabase.getInstance().getReference( "comment" );
                 databaseReference.child( postKey ).removeValue().addOnCompleteListener( new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText( mContext, "Post cancellation done", Toast.LENGTH_SHORT ).show();
-                        }else{
+                        } else {
                             Toast.makeText( mContext, "Fail to delete", Toast.LENGTH_SHORT ).show();
                         }
                     }

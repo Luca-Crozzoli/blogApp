@@ -1,7 +1,5 @@
 package com.example.pictureblog.Activities.ui.home;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pictureblog.Adapters.PostAdapter;
-import com.example.pictureblog.Models.Post;
+import com.example.pictureblog.Entities.Post;
 import com.example.pictureblog.R;
 import com.example.pictureblog.databinding.FragmentHomeBinding;
 import com.google.firebase.database.DataSnapshot;

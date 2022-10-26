@@ -7,30 +7,23 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.text.InputFilter;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.pictureblog.Adapters.CommentAdapter;
 import com.example.pictureblog.Helpers.ToastShort;
-import com.example.pictureblog.Models.Comment;
+import com.example.pictureblog.Entities.Comment;
 import com.example.pictureblog.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,12 +41,9 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.OverlayItem;
 
-import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -64,19 +54,19 @@ public class PostDetailActivity extends AppCompatActivity {
     private TextView txtPostDesc, txtPostDateName, txtPostTitle;
     private MapView post_map;
     private EditText editTextComment;
-    private String PostKey;
     private Button btnAddComment;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser currentUser;
     private FirebaseDatabase firebaseDatabase;
 
-    //new recycler view for holding the comments
+
     private RecyclerView rVComment;
-    // used to adapt the content of the comments
     private CommentAdapter commentAdapter;
     private List<Comment> listComment;
     static String COMMENT_KEY = "comment";
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+
+    private String PostKey;
 
 
     @Override
@@ -104,15 +94,15 @@ public class PostDetailActivity extends AppCompatActivity {
         editTextComment = findViewById( R.id.post_detail_comment );
         btnAddComment = findViewById( R.id.post_detail_add_comment_btn );
 
-        /*OSMODROID*/
+        /*OSMDROID*/
         Context ctx = getApplicationContext();
         Configuration.getInstance().load( ctx, PreferenceManager.getDefaultSharedPreferences( ctx ) );
 
         post_map = (MapView) findViewById( R.id.post_detail_map );
         post_map.setTileSource( TileSourceFactory.MAPNIK );
 
-        String[] permessi = {"Manifest.permission.ACCESS_FINE_LOCATION", " Manifest.permission.WRITE_EXTERNAL_STORAGE"};
-        requestPermissionsIfNecessary( permessi );
+        String[] permissions = {"Manifest.permission.ACCESS_FINE_LOCATION", " Manifest.permission.WRITE_EXTERNAL_STORAGE"};
+        requestPermissionsIfNecessary( permissions );
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -180,14 +170,14 @@ public class PostDetailActivity extends AppCompatActivity {
         //retrieve the post id
         PostKey = getIntent().getExtras().getString( "postKey" );
 
-        //retrieve the date of the post
-        String name = getIntent().getExtras().getString( "userName" );
+        //retrieve the date and the username
+        String userName = getIntent().getExtras().getString( "userName" );
         String date = timeStampToString( getIntent().getExtras().getLong( "postDate" ) );
-        String dateName =date.concat( ":   " ).concat( name );
+        String dateName = date.concat( ":   " ).concat( userName );
         txtPostDateName.setText( dateName );
 
         String postPlace = getIntent().getExtras().getString( "postPlace" );
-        String postPlaceCap = postPlace.substring(0, 1).toUpperCase() + postPlace.substring(1);
+        String postPlaceCap = postPlace.substring( 0, 1 ).toUpperCase() + postPlace.substring( 1 );
 
         String postLocation = getIntent().getExtras().getString( "postLocation" );
         String[] coordinates = postLocation.split( "\n" );
@@ -206,8 +196,8 @@ public class PostDetailActivity extends AppCompatActivity {
         markerLocation.setPosition( startPoint );
 
 
-        Drawable myTooltip = getDrawable( R.drawable.marker_map );
-        markerLocation.setTitle(postPlaceCap);
+        Drawable myTooltip = getDrawable( R.drawable.ic_marker_map );
+        markerLocation.setTitle( postPlaceCap );
         markerLocation.setIcon( myTooltip );
         markerLocation.setAnchor( Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM );
         post_map.getOverlays().add( markerLocation );
@@ -261,7 +251,6 @@ public class PostDetailActivity extends AppCompatActivity {
         for (String permission : permissions) {
             if (ContextCompat.checkSelfPermission( this, permission )
                     != PackageManager.PERMISSION_GRANTED) {
-                // Permission is not granted
                 permissionsToRequest.add( permission );
             }
         }

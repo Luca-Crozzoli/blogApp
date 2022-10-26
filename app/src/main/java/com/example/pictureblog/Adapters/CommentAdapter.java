@@ -11,8 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.pictureblog.Models.Comment;
-import com.example.pictureblog.Models.Post;
+import com.example.pictureblog.Entities.Comment;
 import com.example.pictureblog.R;
 
 import java.text.SimpleDateFormat;
@@ -34,7 +33,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //When we create the view holder we are inflating the row_post_item_layout provided in layouts
-        View row = LayoutInflater.from(mContext).inflate( R.layout.row_comment , parent,false); // the row_comment.xml file
+        View row = LayoutInflater.from(mContext).inflate( R.layout.row_comment , parent,false); // row_comment.xml file
 
         return new CommentViewHolder( row );
     }

@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.pictureblog.Models.Post;
+import com.example.pictureblog.Entities.Post;
 import com.example.pictureblog.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -62,7 +62,7 @@ public class DeleteProfileActivity extends AppCompatActivity {
 
                 AuthCredential credential = EmailAuthProvider.getCredential( currentUser.getEmail(), password );
 
-                //prompt the user to re-provide their sign in credentials
+                //user re-authentication to delete the profile
                 currentUser.reauthenticate( credential ).addOnCompleteListener( new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -99,8 +99,7 @@ public class DeleteProfileActivity extends AppCompatActivity {
                     if (post.getUserId().equals( currentUserId )) {
                         postList.add( post );
                     }
-                } //retrieve all the post of the user
-
+                }
 
                 for (int i = 0; i < postList.size(); i++) {
                     String postKey = postList.get( i ).getPostKey();

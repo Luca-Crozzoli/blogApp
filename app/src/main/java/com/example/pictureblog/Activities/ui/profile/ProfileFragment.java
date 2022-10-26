@@ -2,8 +2,6 @@ package com.example.pictureblog.Activities.ui.profile;
 
 import static com.example.pictureblog.R.id.postRV_profile;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pictureblog.Adapters.PostProfileAdapter;
-import com.example.pictureblog.Models.Post;
+import com.example.pictureblog.Entities.Post;
 import com.example.pictureblog.R;
 import com.example.pictureblog.databinding.FragmentProfileBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,8 +35,6 @@ public class ProfileFragment extends Fragment {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     List<Post> postList;
-
-    //adding the current user dependencies
     FirebaseUser currentUser;
     String userId;
 
@@ -60,7 +56,7 @@ public class ProfileFragment extends Fragment {
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         userId = currentUser.getUid();
-        //get List posts from the database only the ones where the user corresponds to the one logged in
+        //get List posts from the database
         databaseReference.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

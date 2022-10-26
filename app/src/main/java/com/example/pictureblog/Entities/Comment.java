@@ -1,11 +1,10 @@
-package com.example.pictureblog.Models;
+package com.example.pictureblog.Entities;
 
 import com.google.firebase.database.ServerValue;
 
 public class Comment {
 
-    //the things we nedd for a post are the content, user id , uimg profile, username
-    private String content,uid,uimg,uname;
+    private String content, uid, uimg, uname;
     private Object timestamp;
 
     public Comment() {

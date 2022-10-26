@@ -27,7 +27,7 @@ import android.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.example.pictureblog.Helpers.GeoLocation;
 import com.example.pictureblog.Helpers.ToastShort;
-import com.example.pictureblog.Models.Post;
+import com.example.pictureblog.Entities.Post;
 import com.example.pictureblog.R;
 import com.example.pictureblog.databinding.ActivityHomeBinding;
 import com.github.dhaval2404.imagepicker.ImagePicker;
@@ -68,10 +68,9 @@ public class HomeActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityHomeBinding binding;
 
-    //Add the instances for firebase DONE BY ME!!!!!!!!!!!!!!!!!!!!!!!
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private Dialog popAddPost; //creating a new dialog variable to consent the upload of the image
+    private Dialog popAddPost;
 
     //popup widgets references on popup_add_post.xml
     private ImageView popupUserImage, popupPostImage, popupMapIcon,popupAddButton;
@@ -86,12 +85,10 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
 
-        //DONE BY ME initialize firebase instances
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient( HomeActivity.this );
 
-        //DONE BY ME initialize popup
         iniPopup();
         setupPopupImageClick();
 
@@ -99,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView( binding.getRoot() );
 
 
-        //Here we have our floating action Button
+        //Fab Floating action button
         setSupportActionBar( binding.appBarHome.toolbar );
         binding.appBarHome.fab.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -115,14 +112,13 @@ public class HomeActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_profile )
+                R.id.nav_home, R.id.nav_your_posts )
                 .setOpenableLayout( drawer )
                 .build();
         NavController navController = Navigation.findNavController( this, R.id.nav_host_fragment_content_home );
         NavigationUI.setupActionBarWithNavController( this, navController, mAppBarConfiguration );
         NavigationUI.setupWithNavController( navigationView, navController );
 
-        //DONE BY ME, after all those things onCreate we update the headerNavigation bar
         updateNavHeader();
     }
 
@@ -150,7 +146,6 @@ public class HomeActivity extends AppCompatActivity {
         popupPostImage.setImageURI( pickedImgUri );
     }
 
-    //method to initialize the pop up menu used to upload a post
     private void iniPopup() {
 
         popAddPost = new Dialog( this );
@@ -169,22 +164,14 @@ public class HomeActivity extends AppCompatActivity {
                     showLocation();
                 }else {
                     ActivityCompat.requestPermissions( HomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44 );
-                    //Toast.makeText( Home.this, "Permissions added, click again to provide location", Toast.LENGTH_SHORT ).show();
                 }
             }
         } );
+
         popupPostImage = popAddPost.findViewById( R.id.popup_img );
-
         popupTitle = popAddPost.findViewById( R.id.popup_title );
-        //popupTitle.setFilters( new InputFilter[]{new InputFilter.LengthFilter( 60 )} );
-
         popupDescription = popAddPost.findViewById( R.id.popup_description );
-        //popupDescription.setFilters( new InputFilter[]{new InputFilter.LengthFilter( 60 )} );
-
         popupPlace = popAddPost.findViewById( R.id.et_place );
-        //popupPlace.setFilters( new InputFilter[]{new InputFilter.LengthFilter( 60 )} );
-
-
         popupAddButton = popAddPost.findViewById( R.id.popup_add );
         popupClickProgress = popAddPost.findViewById( R.id.popup_progressBar );
 
@@ -252,11 +239,9 @@ public class HomeActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String imageDownloadLink = uri.toString();
-                                // create post Object here after upload the image in firebase storage successfully
-
-
+                                // create post Object
                                 Post post = new Post( postTitle, postDescription, imageDownloadLink, currentUser.getUid(), currentUser.getPhotoUrl().toString(), latitudeLongitude,postPlace,currentUser.getDisplayName() );
-                                //add the post to the database
+                                // add the post to the database
                                 addPost( post );
 
                             }
@@ -305,11 +290,9 @@ public class HomeActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference( "Posts" ).push();
 
-        // get post unique ID and update post key
         String key = myRef.getKey();
         post.setPostKey( key );
 
-        // add post data to firebase database
         myRef.setValue( post ).addOnSuccessListener( new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -356,7 +339,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController( this, R.id.nav_host_fragment_content_home ); //CONTAINED IN CONTENT HOME XML
+        NavController navController = Navigation.findNavController( this, R.id.nav_host_fragment_content_home ); //content_home.xml
         return NavigationUI.navigateUp( navController, mAppBarConfiguration )
                 || super.onSupportNavigateUp();
     }

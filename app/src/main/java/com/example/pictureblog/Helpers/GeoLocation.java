@@ -15,9 +15,9 @@ public class GeoLocation {
     public GeoLocation() {
     }
 
-    public static void getAddress (String locationAddress, Context context, Handler handler){
+    public static void getAddress(String locationAddress, Context context, Handler handler) {
 
-        Thread thread = new Thread(){
+        Thread thread = new Thread() {
             @Override
             public void run() {
                 super.run();
@@ -25,8 +25,8 @@ public class GeoLocation {
                 String result = null;
                 try {
                     //retrieve the first address result from the loocationAdrress provided as an input by the user
-                    List addressList = geocoder.getFromLocationName( locationAddress, 1);
-                    if (addressList != null && addressList.size() >0){
+                    List addressList = geocoder.getFromLocationName( locationAddress, 1 );
+                    if (addressList != null && addressList.size() > 0) {
                         Address address = (Address) addressList.get( 0 );
                         StringBuilder stringBuilder = new StringBuilder();
 
@@ -38,16 +38,14 @@ public class GeoLocation {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                }finally {
+                } finally {
                     Message message = Message.obtain();
                     message.setTarget( handler );
-                    if (result != null){
+                    if (result != null) {
                         message.what = 1; // this is a code unique inside the handler do not worry each handler will have a different code ****
                         Bundle bundle = new Bundle();
-                        result = result; //"Address : "+locationAddress+"\n\n\nLatitude Longitude\n"+result;
-                        bundle.putString( "Address",result );
+                        bundle.putString( "Address", result );
                         message.setData( bundle );
-
                     }
                     message.sendToTarget();
                 }

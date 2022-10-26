@@ -46,7 +46,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_register );
 
-        //initialization of views
         imgUserPhoto = findViewById( R.id.regUserPhoto );
         userName = findViewById( R.id.regName );
         userEmail = findViewById( R.id.regMail );
@@ -57,7 +56,6 @@ public class RegisterActivity extends AppCompatActivity {
         regButton = findViewById( R.id.regButton );
         regLoginText = findViewById( R.id.regLoginTextView );
 
-        //get firebase instance
         mAuth = FirebaseAuth.getInstance();
 
         regButton.setOnClickListener( new View.OnClickListener() {
@@ -117,10 +115,6 @@ public class RegisterActivity extends AppCompatActivity {
                     progressBar.setVisibility( View.GONE );
                     return;
                 }
-
-                //Everything is okay then we can start to create a new user
-                //create user account method will try to create the user if the email is valid
-
                 CreateUserAccount( name, mail, password );
             }
         } );
@@ -159,8 +153,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
 
-        //the user has successfully picked the image
-        // we need to save its reference to a URI variable
         pickedImgUri = data.getData();
         imgUserPhoto.setImageURI( pickedImgUri );
     }

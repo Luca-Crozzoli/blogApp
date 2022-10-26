@@ -44,9 +44,8 @@ public class LoginActivity extends AppCompatActivity {
         loginProgress = findViewById( R.id.login_progress );
         loginProgress.setVisibility( View.GONE );
 
-        //Get the firebase instance
+
         mAuth = FirebaseAuth.getInstance();
-        //initialize the Intent to move user at home after the login
         homeActivity = new Intent( this, HomeActivity.class );
 
         loginPhoto = findViewById( R.id.login_photo );
@@ -130,7 +129,6 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
-            //user is already connected , need to redirect him to home page
             updateUI();
         }
     }
@@ -139,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword( mail, password ).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                //if the sign in task is done the user is signed in
+
                 if (task.isSuccessful()) {
                     loginProgress.setVisibility( View.GONE );
                     btnLogin.setVisibility( View.VISIBLE );
@@ -158,10 +156,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        //move the user to the home activity
         startActivity( homeActivity );
         finish();
     }
-
-
 }

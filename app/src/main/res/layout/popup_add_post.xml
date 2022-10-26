@@ -28,7 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/et_place"
         app:layout_constraintTop_toBottomOf="@id/popup_user_image"
-        app:srcCompat="@drawable/marker_map"></ImageView>
+        app:srcCompat="@drawable/ic_marker_map"></ImageView>
 
     <EditText
         android:id="@+id/popup_title"
@@ -92,7 +92,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/popup_img"
-        app:srcCompat="@drawable/ic_black_create_24" />
+        app:srcCompat="@drawable/ic_black_create" />
 
     <ProgressBar
         android:id="@+id/popup_progressBar"
