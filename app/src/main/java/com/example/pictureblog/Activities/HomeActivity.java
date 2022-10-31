@@ -120,16 +120,20 @@ public class HomeActivity extends AppCompatActivity {
             }
         } );
 
-        //hamburger icon to allow the selection of the different
+        // From activity_home.xml
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        // (hamburger ICON)
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_your_posts )
                 .setOpenableLayout( drawer )
                 .build();
+
         NavController navController = Navigation.findNavController( this, R.id.nav_host_fragment_content_home );
+
         NavigationUI.setupActionBarWithNavController( this, navController, mAppBarConfiguration );
         NavigationUI.setupWithNavController( navigationView, navController );
 
