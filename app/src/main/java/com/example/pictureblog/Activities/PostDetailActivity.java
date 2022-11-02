@@ -63,7 +63,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private RecyclerView rVComment;
     private CommentAdapter commentAdapter;
     private List<Comment> listComment;
-    static String COMMENT = "comment";
+    static String COMMENT = "Comments";
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
     private String PostKey;

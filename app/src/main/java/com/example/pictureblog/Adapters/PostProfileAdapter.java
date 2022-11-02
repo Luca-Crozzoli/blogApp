@@ -114,7 +114,7 @@ public class PostProfileAdapter extends RecyclerView.Adapter<PostProfileAdapter.
                 } );
 
                 //also we need to remove the corresponding comments related to that image
-                databaseReference = FirebaseDatabase.getInstance().getReference( "comment" );
+                databaseReference = FirebaseDatabase.getInstance().getReference( "Comments" );
                 databaseReference.child( postKey ).removeValue().addOnCompleteListener( new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
