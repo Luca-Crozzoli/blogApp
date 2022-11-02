@@ -63,7 +63,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private RecyclerView rVComment;
     private CommentAdapter commentAdapter;
     private List<Comment> listComment;
-    static String COMMENT_KEY = "comment";
+    static String COMMENT = "comment";
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
     private String PostKey;
@@ -118,7 +118,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 //after a click on the add button the button must be invisible
                 btnAddComment.setVisibility( View.INVISIBLE );
 
-                DatabaseReference commentReference = firebaseDatabase.getReference( COMMENT_KEY ).child( PostKey ).push();
+                DatabaseReference commentReference = firebaseDatabase.getReference( COMMENT ).child( PostKey ).push();
                 String comment_content = editTextComment.getText().toString();
                 String uid = currentUser.getUid();
                 String uname = currentUser.getDisplayName();
@@ -214,7 +214,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
         rVComment.setLayoutManager( new LinearLayoutManager( this ) );
 
-        DatabaseReference commentRef = firebaseDatabase.getReference( COMMENT_KEY ).child( PostKey );
+        DatabaseReference commentRef = firebaseDatabase.getReference( COMMENT ).child( PostKey );
         commentRef.addValueEventListener( new ValueEventListener() {
 
             //https://stackoverflow.com/questions/61703700/when-to-use-datasnapshot-getchildren
