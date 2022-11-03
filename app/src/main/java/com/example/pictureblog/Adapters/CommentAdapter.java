@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHolder> {
 
     private Context mContext;
     private List<Comment> mData;
@@ -31,15 +31,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     @NonNull
     @Override
-    public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //When we create the view holder we are inflating the row_post_item_layout provided in layouts
         View row = LayoutInflater.from(mContext).inflate( R.layout.row_comment , parent,false); // row_comment.xml file
 
-        return new CommentViewHolder( row );
+        return new MyViewHolder( row );
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Glide.with(mContext).load( mData.get( position ).getUimg() ).into(holder.img_user );
         holder.tv_name.setText( mData.get( position ).getUname() );
@@ -54,11 +54,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         return mData.size();
     }
 
-    public class CommentViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder{
 
         ImageView img_user;
         TextView tv_name,tv_content,tv_date;
-        public CommentViewHolder(View itemView){
+        public MyViewHolder(View itemView){
             super(itemView);
             img_user = itemView.findViewById( R.id.comment_user_img );
             tv_name = itemView.findViewById(R.id.comment_username  );
