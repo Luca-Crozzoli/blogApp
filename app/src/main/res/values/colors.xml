@@ -9,4 +9,8 @@
     <color name="cyan">#00b0ff</color>
     <color name="light_cyan">#ABCBDA</color>
 
+    <color name="ucrop_color_toolbar">@color/cyan</color>
+    <color name="ucrop_color_statusbar">@color/light_cyan</color>
+    <color name="ucrop_color_widget_active">@color/cyan</color>
+
 </resources>
