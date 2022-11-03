@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 if (password.length() < 6) {
-                    userPassword.setError( "Password doesn't satisfy the length of 6 characters" );
+                    userPassword.setError( "Password must be at least 6 characters" );
                     userPassword.requestFocus();
                     btnLogin.setVisibility( View.VISIBLE );
                     loginProgress.setVisibility( View.GONE );
