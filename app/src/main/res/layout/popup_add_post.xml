@@ -8,9 +8,8 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/popup_user_image"
         android:layout_width="48dp"
-        android:layout_height="0dp"
-        android:background="@color/white"
-        android:padding="8dp"
+        android:layout_height="48dp"
+        android:padding="3dp"
         app:layout_constraintBottom_toTopOf="@+id/et_place"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/popup_title"
