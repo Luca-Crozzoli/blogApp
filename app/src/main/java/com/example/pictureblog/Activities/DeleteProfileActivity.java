@@ -161,7 +161,7 @@ public class DeleteProfileActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText( getApplicationContext(), "Cancellation of post done", Toast.LENGTH_SHORT ).show();
+                            Toast.makeText( getApplicationContext(), "Cancellation of posts done", Toast.LENGTH_SHORT ).show();
                         } else {
                             Toast.makeText( getApplicationContext(), "Fail to delete", Toast.LENGTH_SHORT ).show();
 
