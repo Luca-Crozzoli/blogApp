@@ -162,7 +162,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //user account created successfully
-                            ToastShort ToastS = new ToastShort( "New User account registration done!", getApplicationContext() );
+                            ToastShort ToastS = new ToastShort( "New User account registration...", getApplicationContext() );
                             ToastS.showMessage();
                             //after created the user account we need to update his picture and name
                             updateUserInfo( name, pickedImgUri, mAuth.getCurrentUser() );
