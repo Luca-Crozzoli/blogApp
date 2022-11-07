@@ -34,7 +34,7 @@
     <string name="register_button">Register</string>
     <string name="login_edit_text">Already Have an account? Log in</string>
 
-    <string name="register_edit_text">Tou don\'t have an account? register here</string>
+    <string name="register_edit_text">You don\'t have an account? register here</string>
     <string name="forgot_pwd_edit_text">Forgot password?</string>
 
     <string name="add_button">ADD</string>
