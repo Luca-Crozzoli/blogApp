@@ -120,7 +120,7 @@ public class DeleteProfileActivity extends AppCompatActivity {
                             finish();
 
                         } else {
-                            Toast.makeText( getApplicationContext(), "Deletion not done!", Toast.LENGTH_SHORT ).show();
+
                         }
                     }
                 } );
