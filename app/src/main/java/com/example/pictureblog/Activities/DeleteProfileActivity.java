@@ -142,7 +142,7 @@ public class DeleteProfileActivity extends AppCompatActivity {
             imgReference.delete().addOnSuccessListener( new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
-                    Toast.makeText( DeleteProfileActivity.this, "Removed user correctly", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( DeleteProfileActivity.this, "User removed correctly", Toast.LENGTH_SHORT ).show();
                 }
             } );
         }
