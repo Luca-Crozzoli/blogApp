@@ -1,4 +1,4 @@
-# blogApp PictureBlog
+# BlogApp PictureBlog
 ![image](https://user-images.githubusercontent.com/74430111/200319707-5771439a-5629-45b0-ac8a-da4c7086c000.png)
 
 Progetto Sistemi Integrati e mobili, Applicazione Android
