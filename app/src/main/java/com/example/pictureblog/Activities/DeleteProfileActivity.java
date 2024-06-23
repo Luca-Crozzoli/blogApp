@@ -55,7 +55,7 @@ public class DeleteProfileActivity extends AppCompatActivity {
                 String password = confirmPassword.getText().toString().trim();
 
                 if (password.isEmpty()) {
-                    confirmPassword.setError( "Pleas insert the password to delete your account" );
+                    confirmPassword.setError( "Please insert the password to delete your account" );
                     confirmPassword.requestFocus();
                     return;
                 }

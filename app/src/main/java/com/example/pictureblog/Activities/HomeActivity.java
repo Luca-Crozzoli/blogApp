@@ -111,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         //Fab Floating action button
-        setSupportActionBar( binding.appBarHome.toolbar );
+        setSupportActionBar( binding.appBarHome.toolbar);
         binding.appBarHome.fab.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
